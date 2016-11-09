@@ -1,0 +1,4 @@
+一个查询服务器状态的业务例子。
+前台使用amazing UI做的
+后台使用servlet通过http请求获取服务器状态信息jsonObject，jsonObject都封装到jsonArray中，然后Ajax请求显示到页面中。
+使用的是alibaba,fastJson

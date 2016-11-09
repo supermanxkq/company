@@ -53,14 +53,6 @@
   <!--
     - Use the Cocoon multipart filter together with the Cocoon demo webapp
     -->
-  <filter-mapping>
-    <filter-name>CocoonMultipartFilter</filter-name>
-    <servlet-name>Cocoon</servlet-name>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>CocoonMultipartFilter</filter-name>
-    <servlet-name>DispatcherServlet</servlet-name>
-  </filter-mapping>
 
   <!--
     - Use the Cocoon debug filter together with the Cocoon demo webapp
@@ -101,6 +93,13 @@
     <servlet-class>org.apache.cocoon.servletservice.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>FastJsonServlet</display-name>
+  	<servlet-name>FastJsonServlet</servlet-name>
+  	<servlet-class>com.xukaiqiang.json.FastJsonServlet</servlet-class>
+  </servlet>
 
   <!-- URL space mappings ============================================= -->
 
@@ -114,6 +113,12 @@
     <servlet-name>DispatcherServlet</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
-
+  <servlet-mapping>
+  	<servlet-name>FastJsonServlet</servlet-name>
+  	<url-pattern>/FastJsonServlet</url-pattern>
+  </servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
         
