@@ -92,7 +92,7 @@ public class HttpUtils {
 			while ((charCount = br.read()) != -1) {
 				responseMessage.append((char) charCount);
 			}
-			// System.out.println(responseMessage);
+			 System.out.println(responseMessage);
 			// System.out.println("===========post method end=========");
 		} catch (Exception ex) {
 			//responseMessage.append("ERROR");
