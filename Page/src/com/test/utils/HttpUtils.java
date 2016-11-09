@@ -95,7 +95,7 @@ public class HttpUtils {
 			 System.out.println(responseMessage);
 			// System.out.println("===========post method end=========");
 		} catch (Exception ex) {
-			//responseMessage.append("ERROR");
+			responseMessage.append("ERROR");
 		} finally {
 			try {
 				br.close();
