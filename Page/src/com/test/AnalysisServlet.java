@@ -104,29 +104,33 @@ public class AnalysisServlet extends HttpServlet {
 	 * @return
 	 */
 	private JSONArray serverStatus() {
-		JSONArray arrayList = new JSONArray();
+ 		JSONArray arrayList = new JSONArray();
 		JSONArray array = new JSONArray();
 		StringBuffer ret = HttpUtils.submitPost(
 				"http://tu.hangtian123.net/WebSearch/queryCustomer.jsp", "",
 				"utf-8");
-		String[] ulrs = ret.toString().split(",");
-		String IP = "";
+		//获取url字符数组
+		String[] ulrs = (ret.toString()+",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp").split(",");
+		String oldIP = "";
 		for (int i = 0; i < ulrs.length; i++) {
+			//替换url
 			String url = ulrs[i].trim().replace("iSearch", "isNormal.jsp");
-			String ip = getIpAndPort(url)[0];
-			if (IP == "") {
-				IP = ip;
+			String newIp = getIpAndPort(url)[0];
+			//根据IP进行分组，IP相同的分到一组
+			if (oldIP == "") {
+				oldIP = newIp;
 			}
-			if (!IP.equals(ip)) {
-				JSONObject json = new JSONObject();
-				json.put("IP", IP);
-				json.put("urls", array);
+			if (!oldIP.equals(newIp)) {
+				JSONObject json1 = new JSONObject();
+				json1.put("IP", oldIP);
+				json1.put("urls", array);
 				array = new JSONArray();
-				arrayList.add(json);
-				IP = ip;
+				arrayList.add(json1);
+				oldIP = newIp;
 			}
+			//封装每台服务器的状态
 			JSONObject json = new JSONObject();
-			json.put("ip", ip);
+			json.put("ip", newIp);
 			json.put("port", getIpAndPort(url)[1]);
 			String  aaaaString=HttpUtils.submitGet(url);
 			if(null!=aaaaString){
