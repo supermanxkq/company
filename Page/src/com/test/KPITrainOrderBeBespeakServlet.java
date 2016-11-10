@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.test.utils.HttpUtils;
+import com.test.utils.PropertyUtil;
 import com.test.utils.Utils;
 
 /**
@@ -90,6 +91,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		// 打印json数据到页面
 		Utils.printInfo(array, response);
 	}
+
 	/**
 	 * @Description: 服务器状态
 	 * @author 徐凯强
@@ -100,8 +102,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private JSONArray serverStatus() {
 		JSONArray arrayList = new JSONArray();
 		JSONArray array = new JSONArray();
-		StringBuffer ret = HttpUtils.submitPost(
-				"http://tu.hangtian123.net/WebSearch/queryCustomer.jsp", "",
+		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"), "",
 				"utf-8");
 		// 获取url字符数组
 		String[] ulrs = (ret.toString() + ",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp")
@@ -146,14 +147,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 */
 	private JSONArray Memory() {
 		JSONArray jsonArray = new JSONArray();
-		String[] ips = {
-				"http://121.199.1.76:2001/trainorder_bespeak/view_data.jsp",
-				"http://120.26.81.198:2101/trainorder_bespeak/view_data.jsp",
-				"http://121.199.51.62:2201/trainorder_bespeak/view_data.jsp",
-				"http://121.40.130.195:2301/trainorder_bespeak/view_data.jsp",
-				"http://43.241.234.88:2001/trainorder_bespeak/view_data.jsp",
-				"http://120.26.81.198:2401/trainorder_bespeak/view_data.jsp",
-				"http://121.199.51.62:4199/trainorder_bespeak/view_data.jsp" };
+		String[] ips = PropertyUtil.getValue("memory_url", "Train.properties").split(",");
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
 			JSONObject jsonObject = new JSONObject();
@@ -193,12 +187,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 */
 	private JSONArray placeOrderCustomerResult() {
 		JSONArray jsonArray = new JSONArray();
-		String[] ips = {
-				"http://121.41.51.7:29134/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0",
-				"http://121.41.51.7:29234/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0",
-				"http://121.41.51.7:49034/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0",
-				"http://121.41.51.7:49134/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0",
-				"http://121.41.51.7:49234/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0" };
+		String[] ips =PropertyUtil.getValue("placeOrderCustomerResult_url", "Train.properties").split(",");
 
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
@@ -234,7 +223,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return
 	 */
 	private JSONArray rep() {
-		String url = "http://121.199.51.62:2201/trainorder_bespeak/isNormal.jsp";
+		String url = PropertyUtil.getValue("rep_url", "Train.properties");
 		JSONArray jsonArray = new JSONArray();
 		JSONObject json = new JSONObject();
 		String[] ipAndPort = getIpAndPort(url);
@@ -265,7 +254,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return
 	 */
 	private JSONArray ticketMemory() {
-		String url = "http://121.40.130.195:19078/trainorder_bespeak/isNormal.jsp";
+		String url = PropertyUtil.getValue("ticket_memory_url","Train.properties");
 		// 抢票内存统计消费者
 		String[] ipAndPort = getIpAndPort(url);
 		JSONArray array = new JSONArray();
@@ -297,9 +286,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return返回Data对象，可能是真实数据，也有可能是异常信息
 	 */
 	private JSONArray alibabaAndMeiTuan() {
-		String[] ips = {
-				"http://121.199.1.76:3001/trainorder_bespeak/isNormal.jsp",
-				"http://43.241.234.88:3001/trainorder_bespeak/isNormal.jsp" };
+		String[] ips =PropertyUtil.getValue("alibaba_meituan_url","Train.properties").split(",");
 		JSONArray array = new JSONArray();
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
@@ -336,9 +323,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 
 	private JSONArray invalidOrder() {
 		JSONArray jsonArray = new JSONArray();
-		String[] ips = {
-				"http://120.26.81.198:9077/trainorder_bespeak/isNormal.jsp",
-				"http://120.26.81.198:9066/trainorder_bespeak/isNormal.jsp" };
+		String[] ips =PropertyUtil.getValue("invalid_order_url","Train.properties").split(",");
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
 			JSONObject json = new JSONObject();
@@ -369,7 +354,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 */
 	private JSONArray taoBao() {
 		JSONArray array = new JSONArray();
-		String url = "http://121.40.130.195:19044/trainorder_bespeak/isNormal.jsp";
+		String url = PropertyUtil.getValue("taobao_url","Train.properties");
 		JSONObject json = new JSONObject();
 		String[] ipAndPort = getIpAndPort(url);
 		json.put("port", ipAndPort[1]);
@@ -409,6 +394,4 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		String[] data = { ip, port };
 		return data;
 	}
-
-
 }

@@ -121,13 +121,6 @@ public class HttpUtils {
 	 */
 
 	public static void main(String[] args) {
-//		StringBuffer html = submitPost(
-//				"http://121.199.1.76:2001/trainorder_bespeak/view_data.jsp",
-//				"", "utf-8");
-//		System.out.println(html);
-//
-//		System.out
-//				.println(submitGet("http://121.199.1.76:2001/trainorder_bespeak/view_data.jsp"));
 		System.out
 		.println(submitGet("http://121.41.51.7:29134/trainorder_bespeak/mq/MqTrainCreateOrder.jsp?type=0"));
 		
