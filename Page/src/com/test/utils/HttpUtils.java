@@ -32,10 +32,10 @@ public class HttpUtils {
 		try {
 			URL url = new URL(strUrl);
 			connection = url.openConnection();
+			connection.setConnectTimeout(500);
+			connection.setReadTimeout(500);
 			connection.setDoInput(true);
 			connection.setDoOutput(false);
-			connection.setConnectTimeout(100);
-            connection.setReadTimeout(100);
 			// 取得输入流，并使用Reader读取
 			reader = new BufferedReader(new InputStreamReader(
 					connection.getInputStream()));
@@ -46,7 +46,8 @@ public class HttpUtils {
 			}
 			str = linebuff.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			str = "异常";
 		} finally {
 			try {
 				reader.close();
@@ -79,8 +80,8 @@ public class HttpUtils {
 			responseMessage = new StringBuffer();
 			reqUrl = new java.net.URL(url);
 			connection = reqUrl.openConnection();
-			connection.setConnectTimeout(100);
-            connection.setReadTimeout(100);
+			connection.setConnectTimeout(500);
+			connection.setReadTimeout(500);
 			connection.setDoOutput(true);
 			reqOut = new OutputStreamWriter(connection.getOutputStream());
 			reqOut.write(param);
@@ -92,10 +93,8 @@ public class HttpUtils {
 			while ((charCount = br.read()) != -1) {
 				responseMessage.append((char) charCount);
 			}
-			 System.out.println(responseMessage);
-			// System.out.println("===========post method end=========");
 		} catch (Exception ex) {
-			responseMessage.append("ERROR");
+			responseMessage.append("异常");
 		} finally {
 			try {
 				br.close();

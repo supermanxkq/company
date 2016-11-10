@@ -90,33 +90,28 @@ public class AnalysisServlet extends HttpServlet {
 		// 打印json数据到页面
 		Utils.printInfo(array, response);
 	}
-
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 服务器状态
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午11:28:01
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午11:28:01
-	 * @version 1.0
 	 * @param ips
 	 * @return
 	 */
 	private JSONArray serverStatus() {
- 		JSONArray arrayList = new JSONArray();
+		JSONArray arrayList = new JSONArray();
 		JSONArray array = new JSONArray();
 		StringBuffer ret = HttpUtils.submitPost(
 				"http://tu.hangtian123.net/WebSearch/queryCustomer.jsp", "",
 				"utf-8");
-		//获取url字符数组
-		String[] ulrs = (ret.toString()+",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp").split(",");
+		// 获取url字符数组
+		String[] ulrs = (ret.toString() + ",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp")
+				.split(",");
 		String oldIP = "";
 		for (int i = 0; i < ulrs.length; i++) {
-			//替换url
+			// 替换url
 			String url = ulrs[i].trim().replace("iSearch", "isNormal.jsp");
 			String newIp = getIpAndPort(url)[0];
-			//根据IP进行分组，IP相同的分到一组
+			// 根据IP进行分组，IP相同的分到一组
 			if (oldIP == "") {
 				oldIP = newIp;
 			}
@@ -128,14 +123,14 @@ public class AnalysisServlet extends HttpServlet {
 				arrayList.add(json1);
 				oldIP = newIp;
 			}
-			//封装每台服务器的状态
+			// 封装每台服务器的状态
 			JSONObject json = new JSONObject();
 			json.put("ip", newIp);
 			json.put("port", getIpAndPort(url)[1]);
-			String  aaaaString=HttpUtils.submitGet(url);
-			if(null!=aaaaString){
+			String aaaaString = HttpUtils.submitGet(url);
+			if (null != aaaaString) {
 				json.put("value", aaaaString);
-			}else{
+			} else {
 				json.put("value", "异常");
 			}
 			array.add(json);
@@ -144,14 +139,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description:抢票内存
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午10:04:02
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午10:04:02
-	 * @version 1.0
 	 * @return
 	 */
 	private JSONArray Memory() {
@@ -196,14 +186,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 下单消费者
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午9:29:05
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午9:29:05
-	 * @version 1.0
 	 * @return
 	 */
 	private JSONArray placeOrderCustomerResult() {
@@ -243,14 +228,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: REP
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午9:15:26
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午9:15:26
-	 * @version 1.0
 	 * @return
 	 */
 	private JSONArray rep() {
@@ -279,14 +259,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 抢票内存统计消费者
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午9:03:09
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午9:03:09
-	 * @version 1.0
 	 * @return
 	 */
 	private JSONArray ticketMemory() {
@@ -315,14 +290,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: alibabaMeituan
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月7日 下午5:44:45
-	 * @modifier
-	 * @modify-date 2016年11月7日 下午5:44:45
-	 * @version 1.0
 	 * @param ips
 	 * @return返回Data对象，可能是真实数据，也有可能是异常信息
 	 */
@@ -359,15 +329,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 过期扫描服务
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午8:35:37
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午8:35:37
-	 * @version 1.0
-	 * @return
 	 */
 
 	private JSONArray invalidOrder() {
@@ -399,15 +363,9 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 淘宝抢票查询列队
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月8日 上午8:55:36
-	 * @modifier
-	 * @modify-date 2016年11月8日 上午8:55:36
-	 * @version 1.0
-	 * @return
 	 */
 	private JSONArray taoBao() {
 		JSONArray array = new JSONArray();
@@ -433,16 +391,10 @@ public class AnalysisServlet extends HttpServlet {
 	}
 
 	/**
-	 * Class Name: AnalysisServlet.java
-	 * 
 	 * @Description: 根据url获取ip
-	 * @author xukaiqiang
+	 * @author 徐凯强
 	 * @date 2016年11月7日 下午6:58:17
-	 * @modifier
-	 * @modify-date 2016年11月7日 下午6:58:17
-	 * @version 1.0
 	 * @param url
-	 * @return
 	 */
 	private static String[] getIpAndPort(String url) {
 		String ip = "";
@@ -458,40 +410,5 @@ public class AnalysisServlet extends HttpServlet {
 		return data;
 	}
 
-	public static void main(String[] args) {
-		JSONArray arrayList = new JSONArray();
-		JSONArray array = new JSONArray();
-		StringBuffer ret = HttpUtils.submitPost(
-				"http://tu.hangtian123.net/WebSearch/queryCustomer.jsp", "",
-				"utf-8");
-		String[] ulrs = ret.toString().split(",");
-		String IP = "";
-		for (int i = 0; i < ulrs.length; i++) {
-			String url = ulrs[i].trim().replace("iSearch", "isNormal.jsp");
-			String ip = getIpAndPort(url)[0];
-			if (IP == "") {
-				IP = ip;
-			}
-			if (!IP.equals(ip)) {
-				JSONObject json = new JSONObject();
-				json.put("IP", IP);
-				json.put("urls", array);
-				array = new JSONArray();
-				arrayList.add(json);
-				IP = ip;
-			}
-			JSONObject json = new JSONObject();
-			json.put("ip", ip);
-			json.put("port", getIpAndPort(url)[1]);
-//			String  aaaaString=HttpUtils.submitGet(url);
-//			if(null!=aaaaString){
-//				json.put("value", aaaaString);
-//			}else{
-				json.put("value", "异常");
-//			}
-			
-			array.add(json);
-		}
-		System.out.println(arrayList.toJSONString());
-	}
+
 }
