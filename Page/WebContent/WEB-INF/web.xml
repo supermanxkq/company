@@ -4,13 +4,13 @@
 	<servlet>
 		<description>
 		</description>
-		<display-name>AnalysisServlet</display-name>
-		<servlet-name>AnalysisServlet</servlet-name>
-		<servlet-class>com.test.AnalysisServlet</servlet-class>
+		<display-name>KPITrainOrderBeBespeakServlet</display-name>
+		<servlet-name>KPITrainOrderBeBespeakServlet</servlet-name>
+		<servlet-class>com.test.KPITrainOrderBeBespeakServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>AnalysisServlet</servlet-name>
-		<url-pattern>/AnalysisServlet</url-pattern>
+		<servlet-name>KPITrainOrderBeBespeakServlet</servlet-name>
+		<url-pattern>/KPITrainOrderBeBespeakServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>statusmanage.html</welcome-file>

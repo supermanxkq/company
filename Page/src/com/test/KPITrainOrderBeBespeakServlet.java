@@ -28,13 +28,13 @@ import com.test.utils.Utils;
  * @version 1.0
  */
 
-public class AnalysisServlet extends HttpServlet {
+public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AnalysisServlet() {
+	public KPITrainOrderBeBespeakServlet() {
 		super();
 	}
 

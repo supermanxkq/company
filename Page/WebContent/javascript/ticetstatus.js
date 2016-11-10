@@ -43,7 +43,7 @@ $(function() {
 	//阿里内存重构
 	Index.alibabaAndMeiTuan=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=302",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=302",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -64,7 +64,7 @@ $(function() {
 	//过期扫描服务
 	Index.invalidService=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=303",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=303",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -87,7 +87,7 @@ $(function() {
 	//抢票内存
 	Index.memoryRefresh=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=306",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=306",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -117,7 +117,7 @@ $(function() {
 	//抢票消费者
 	Index.ticketMemoryRefresh=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=304",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=304",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -139,7 +139,7 @@ $(function() {
 	//淘宝抢票查询列队
 	Index.taoBaoRefresh=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=305",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=305",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -163,7 +163,7 @@ $(function() {
 	//rep
 	Index.repRefresh=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=308",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=308",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -189,7 +189,7 @@ $(function() {
 	//下单消费者
 	Index.placeOrderCustomerRefresh=function(){
 		$.ajax({
-			url : rootPath+ "/AnalysisServlet?type=307",
+			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=307",
 			data : '',
 			type : 'post',
 			success:function(jsonData){
@@ -219,7 +219,7 @@ $(function() {
 	//服务器
 	Index.serverRefresh=function(){
 		$.ajax({
-			url:rootPath+"/AnalysisServlet?type=309",
+			url:rootPath+"/KPITrainOrderBeBespeakServlet?type=309",
 			data:'',
 			type:'post',
 			success:function(jsonData){
