@@ -224,8 +224,10 @@ $(function() {
 			type:'post',
 			success:function(jsonData){
 				$(".server").html("");
+				var color=0;
 				for (var i = 0; i < jsonData.length; i++) {
-					var  html='<div class="am-panel    am-panel-danger    panel-width-height server-float">';
+					var  array=['am-panel-danger','am-panel-success','am-panel-secondary'];
+					var  html='<div class="am-panel    '+array[color]+'    panel-width-height server-float">';
 					html+='<div class="am-panel-hd">'+jsonData[i].IP+'</div>';
 					html+='<div class="am-panel-bd"><table width="100%" height="100%" class="am-table"><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>';
 					for (var j = 0; j < jsonData[i].urls.length; j++) {
@@ -233,6 +235,10 @@ $(function() {
 					}
 					html+='</tbody></table></div>';
 					html+= '</div>';
+					color++;
+					if(color==3){
+						color=0;
+					}
 					$(".server").append(html);
 				}
 				
