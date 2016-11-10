@@ -152,13 +152,13 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			String[] ipAndPort = getIpAndPort(ips[i]);
 			JSONObject jsonObject = new JSONObject();
 			if (i < 5) {
-				jsonObject.put("name", (i + 1) + "号内存");
+				jsonObject.put("name", (i + 1) + "号");
 			}
 			if (i == 5) {
-				jsonObject.put("name", "VIP内存");
+				jsonObject.put("name", "VIP");
 			}
 			if (i == 6) {
-				jsonObject.put("name", "探针内存");
+				jsonObject.put("name", "探针");
 			}
 			jsonObject.put("ip", ipAndPort[0]);
 			jsonObject.put("port", ipAndPort[1]);
