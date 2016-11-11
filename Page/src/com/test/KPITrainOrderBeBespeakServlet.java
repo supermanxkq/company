@@ -56,36 +56,30 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// 数据传输数组
 		JSONArray array = new JSONArray();
-		String param = request.getParameter("type");
+		String type = request.getParameter("type");
 		// alibaba meiTuan
-		if (param.equals("302")) {
+		if ("302".equals(type)) {
 			array = alibabaAndMeiTuan();
-		}
-		// 过期扫描订单
-		if (param.equals("303")) {
+		} else if ("303".equals(type)) {
+			// 过期扫描订单
 			array = invalidOrder();
-		}
-		// 抢票内存统计消费者
-		if (param.equals("304")) {
+		} else if ("304".equals(type)) {
+			// 抢票内存统计消费者
 			array = ticketMemory();
-		}
-		// 淘宝抢票查询列队
-		if (param.equals("305")) {
+		} else if ("305".equals(type)) {
+			// 淘宝抢票查询列队
 			array = taoBao();
-		}
-		// 抢票内存
-		if (param.equals("306")) {
+		} else if ("306".equals(type)) {
+			// 抢票内存
 			array = Memory();
-		}
-		// 下单消费者
-		if (param.equals("307")) {
+		} else if ("307".equals(type)) {
+			// 下单消费者
 			array = placeOrderCustomerResult();
-		}
-		// rep
-		if (param.equals("308")) {
+		} else if ("308".equals(type)) {
+			// rep
 			array = rep();
-		}
-		if (param.equals("309")) {
+		} else if ("309".equals(type)) {
+			// 服务器状态
 			array = serverStatus();
 		}
 		// 打印json数据到页面
@@ -102,8 +96,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private JSONArray serverStatus() {
 		JSONArray arrayList = new JSONArray();
 		JSONArray array = new JSONArray();
-		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"), "",
-				"utf-8");
+		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"),"", "utf-8");
 		// 获取url字符数组
 		String[] ulrs = (ret.toString() + ",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp")
 				.split(",");
@@ -187,8 +180,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 */
 	private JSONArray placeOrderCustomerResult() {
 		JSONArray jsonArray = new JSONArray();
-		String[] ips =PropertyUtil.getValue("placeOrderCustomerResult_url", "Train.properties").split(",");
-
+		String[] ips = PropertyUtil.getValue("placeOrderCustomerResult_url","Train.properties").split(",");
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
 			JSONObject json = new JSONObject();
@@ -254,7 +246,8 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return
 	 */
 	private JSONArray ticketMemory() {
-		String url = PropertyUtil.getValue("ticket_memory_url","Train.properties");
+		String url = PropertyUtil.getValue("ticket_memory_url",
+				"Train.properties");
 		// 抢票内存统计消费者
 		String[] ipAndPort = getIpAndPort(url);
 		JSONArray array = new JSONArray();
@@ -286,7 +279,8 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return返回Data对象，可能是真实数据，也有可能是异常信息
 	 */
 	private JSONArray alibabaAndMeiTuan() {
-		String[] ips =PropertyUtil.getValue("alibaba_meituan_url","Train.properties").split(",");
+		String[] ips = PropertyUtil.getValue("alibaba_meituan_url",
+				"Train.properties").split(",");
 		JSONArray array = new JSONArray();
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
@@ -323,7 +317,8 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 
 	private JSONArray invalidOrder() {
 		JSONArray jsonArray = new JSONArray();
-		String[] ips =PropertyUtil.getValue("invalid_order_url","Train.properties").split(",");
+		String[] ips = PropertyUtil.getValue("invalid_order_url",
+				"Train.properties").split(",");
 		for (int i = 0; i < ips.length; i++) {
 			String[] ipAndPort = getIpAndPort(ips[i]);
 			JSONObject json = new JSONObject();
@@ -354,7 +349,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 */
 	private JSONArray taoBao() {
 		JSONArray array = new JSONArray();
-		String url = PropertyUtil.getValue("taobao_url","Train.properties");
+		String url = PropertyUtil.getValue("taobao_url", "Train.properties");
 		JSONObject json = new JSONObject();
 		String[] ipAndPort = getIpAndPort(url);
 		json.put("port", ipAndPort[1]);
@@ -394,4 +389,22 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		String[] data = { ip, port };
 		return data;
 	}
+	
+	
+	/**
+	 * @Description: 传入配置文件的key值和请求的类型type获取要返回的服务器状态jsonArray
+	 * @author 徐凯强
+	 * @date 2016年11月11日 下午5:38:41
+	 * @param property_key配置文件键值
+	 * @param type请求的类型，例如：点击抢票内存统计消费者，点击淘宝抢票查询列队
+	 * @return
+	*/
+	private  static   JSONArray   checkServerStatus(String property_key,String type){
+		
+		
+		
+		return null;
+	}
+	
+	
 }

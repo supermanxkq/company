@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>抢票各个环节状态</title>
+</head>
+<link rel="stylesheet"
+	href="http://c.hangtian123.net/css/amazeui.min.css" />
+<link rel="stylesheet" href="css/serverstatus.css"></link>
+<body>
+	<table class="table_style">
+		<tr class="tr_height_20_percent">
+			<td class="td_width_33_percent">
+				<div class="am-panel am-panel-primary panel-width-height">
+					<div class="am-panel-hd">
+						重构内存<a class="doc-icon-custom" id="alibabaRefresh"> <span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="alibabaAndMeiTuan">点击刷新查看数据</div>
+				</div>
+			</td>
+			<td rowspan="2" class="td_width_33_percent">
+				<div class="am-panel am-panel-secondary panel-width-height">
+					<div class="am-panel-hd">
+						抢票内存<a class="doc-icon-custom" id="memoryRefresh"> <span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="memoryResult">点击刷新查看数据</div>
+				</div>
+			</td>
+			<td rowspan="2" class="td_width_33_percent">
+				<div class="am-panel am-panel-success panel-width-height">
+					<div class="am-panel-hd">
+						下单消费者<a class="doc-icon-custom" id="placeOrderCustomerRefresh">
+							<span class="am-badge am-badge-success am-text-default  am-round">刷新</span>
+						</a>
+					</div>
+					<div class="am-panel-bd" id="placeOrderCustomer">点击刷新查看数据</div>
+				</div>
+			</td>
+		</tr>
+		<tr class="tr_height_20_percent">
+			<td>
+				<div class="am-panel am-panel-warning panel-width-height">
+					<div class="am-panel-hd">
+						过期扫描订单<a class="doc-icon-custom" id="invalidRefresh"> <span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="invalid">点击刷新查看数据</div>
+				</div>
+			</td>
+		</tr>
+		<tr class="tr_height_10_percent">
+			<td>
+				<div class="am-panel am-panel-secondary panel-width-height">
+					<div class="am-panel-hd">
+						REP下单回调内存-预约票统计消费者<a class="doc-icon-custom" id="repRefresh"><span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="rep">点击刷新查看数据</div>
+				</div>
+			</td>
+			<td>
+				<div class="am-panel   am-panel-danger  panel-width-height">
+					<div class="am-panel-hd">
+						抢票内存统计消费者<a class="doc-icon-custom" id="ticketMemoryRefresh">
+							<span class="am-badge am-badge-success am-text-default  am-round">刷新</span>
+						</a>
+					</div>
+					<div class="am-panel-bd" id="ticketMemory">点击刷新查看数据</div>
+				</div>
+			</td>
+			<td>
+				<div class="am-panel am-panel-success panel-width-height">
+					<div class="am-panel-hd">
+						淘宝抢票查询列队<a class="doc-icon-custom" id="taoBaoRefresh"> <span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="taoBao">点击刷新查看数据</div>
+				</div>
+			</td>
+		</tr>
+		<tr class="tr_height_50_percent">
+			<td colspan='3'>
+				<div class="am-panel am-panel-primary panel-width-height">
+					<div class="am-panel-hd">
+						所有查询消费者<a class="doc-icon-custom" id="serverRefresh"> <span
+							class="am-badge am-badge-success am-text-default  am-round">刷新</span></a>
+					</div>
+					<div class="am-panel-bd" id="server"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<script
+		src="http://tu.hangtian123.net/12306SearchMonitor/js/jquery.min.js"></script>
+	<script src="http://c.hangtian123.net/js/amazeui.min.js"></script>
+	<!-- 获取数据的js -->
+	<script type="text/javascript" src="javascript/serverstatus.js"></script>
+</body>
+</html>

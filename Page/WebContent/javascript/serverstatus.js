@@ -1,39 +1,41 @@
 $(function() {
-	var Index = {};
+	//声明
+	var ServerStatus = {};
+	//获取rootPath
 	var rootPath=getRootPath();
-	//事件
-	Index.event=function(){
+	//初始化加载所有dom元素的点击事件
+	ServerStatus.init=function(){
 		//重构内存
-		$('.alibabaRefresh').on('click', function(){
-			Index.alibabaAndMeiTuan();
+		$('#alibabaRefresh').on('click', function(){
+			ServerStatus.alibabaAndMeiTuan();
 		});
 		//过期扫描服务
-		$('.invalidRefresh').on('click', function(){
-			Index.invalidService();
+		$('#invalidRefresh').on('click', function(){
+			ServerStatus.invalidService();
 		});
 		//抢票内存
-		$('.memoryRefresh').on('click', function(){
-			Index.memoryRefresh();
+		$('#memoryRefresh').on('click', function(){
+			ServerStatus.memoryRefresh();
 		});
 		//淘宝抢票查询列队
-		$('.taoBaoRefresh').on('click', function(){
-			Index.taoBaoRefresh();
+		$('#taoBaoRefresh').on('click', function(){
+			ServerStatus.taoBaoRefresh();
 		});
 		//rep
-		$('.repRefresh').on('click', function(){
-			Index.repRefresh();
+		$('#repRefresh').on('click', function(){
+			ServerStatus.repRefresh();
 		});
 		//下单消费者
-		$('.placeOrderCustomerRefresh').on('click', function(){
-			Index.placeOrderCustomerRefresh();
+		$('#placeOrderCustomerRefresh').on('click', function(){
+			ServerStatus.placeOrderCustomerRefresh();
 		});
 		//抢票内存
-		$('.ticketMemoryRefresh').on('click', function(){
-			Index.ticketMemoryRefresh();
+		$('#ticketMemoryRefresh').on('click', function(){
+			ServerStatus.ticketMemoryRefresh();
 		});
 		//服务器
-		$(".serverRefresh").on('click',function(){
-			Index.serverRefresh();
+		$("#serverRefresh").on('click',function(){
+			ServerStatus.serverRefresh();
 		});
 	}
 	
@@ -41,7 +43,7 @@ $(function() {
 	
 	
 	//阿里内存重构
-	Index.alibabaAndMeiTuan=function(){
+	ServerStatus.alibabaAndMeiTuan=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=302",
 			data : '',
@@ -57,12 +59,12 @@ $(function() {
 							}
 						}
 						html+="</font></td></tr></tbody></table>";
-				$(".alibabaAndMeiTuan").html(html);
+				$("#alibabaAndMeiTuan").html(html);
 			}
 		});
 	}
 	//过期扫描服务
-	Index.invalidService=function(){
+	ServerStatus.invalidService=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=303",
 			data : '',
@@ -79,13 +81,13 @@ $(function() {
 					html+="</tr>";
 				}
 				html+= "</tbody></table>";
-				$(".invalid").html(html);
+				$("#invalid").html(html);
 			}
 		});
 	}
 	
 	//抢票内存
-	Index.memoryRefresh=function(){
+	ServerStatus.memoryRefresh=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=306",
 			data : '',
@@ -107,7 +109,7 @@ $(function() {
 					html+="</tr>";
 				}
 				html+="</tbody></table>";
-				$(".memoryResult").html(html);
+				$("#memoryResult").html(html);
 			}
 		});
 	}
@@ -115,7 +117,7 @@ $(function() {
 	
 	
 	//抢票消费者
-	Index.ticketMemoryRefresh=function(){
+	ServerStatus.ticketMemoryRefresh=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=304",
 			data : '',
@@ -132,12 +134,12 @@ $(function() {
 					html+="</font></td></tr>"
 				}
 				html+="</tbody></table>";
-				$(".ticketMemory").html(html);
+				$("#ticketMemory").html(html);
 			}
 		});
 	}
 	//淘宝抢票查询列队
-	Index.taoBaoRefresh=function(){
+	ServerStatus.taoBaoRefresh=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=305",
 			data : '',
@@ -156,12 +158,12 @@ $(function() {
 						html+= "</tr>" ;
 					}
 					html+="</tbody></table>";
-				$(".taoBao").html(html);
+				$("#taoBao").html(html);
 			}
 		});
 	}
 	//rep
-	Index.repRefresh=function(){
+	ServerStatus.repRefresh=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=308",
 			data : '',
@@ -182,12 +184,12 @@ $(function() {
 					 html+= "</tr>"
 				}
 				 html+= "</tbody></table>";
-				$(".rep").html(html);
+				$("#rep").html(html);
 			}
 		});
 	}
 	//下单消费者
-	Index.placeOrderCustomerRefresh=function(){
+	ServerStatus.placeOrderCustomerRefresh=function(){
 		$.ajax({
 			url : rootPath+ "/KPITrainOrderBeBespeakServlet?type=307",
 			data : '',
@@ -212,12 +214,12 @@ $(function() {
 					 html+="</tr>";
 				}
 				html+="</tbody></table>";
-				$(".placeOrderCustomer").html(html);
+				$("#placeOrderCustomer").html(html);
 			}
 		});
 	}
 	//服务器
-	Index.serverRefresh=function(){
+	ServerStatus.serverRefresh=function(){
 		$.ajax({
 			url:rootPath+"/KPITrainOrderBeBespeakServlet?type=309",
 			data:'',
@@ -239,10 +241,8 @@ $(function() {
 					if(color==3){
 						color=0;
 					}
-					$(".server").append(html);
+					$("#server").append(html);
 				}
-				
-				
 			}
 		});
 	}
@@ -255,15 +255,15 @@ $(function() {
         var pathName = window.document.location.pathname;
         var pos = curWwwPath.indexOf(pathName);
         //获取主机地址，如： http://localhost:8083
-        var localhostPaht = curWwwPath.substring(0, pos);
+        var localhostPath = curWwwPath.substring(0, pos);
         //获取带"/"的项目名，如：/uimcardprj
         var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
-        return (localhostPaht + projectName);
+        return (localhostPath + projectName);
 	}
 	// 声明
-	window.Index = Index;
+	window.ServerStatus = ServerStatus;
 	$(document).ready(function() {
-		Index.event();
+		ServerStatus.init();
 	});
 	
 });
