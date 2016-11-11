@@ -1,6 +1,10 @@
 package com.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,28 +63,28 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		// alibaba meiTuan
 		if ("302".equals(type)) {
-			array = alibabaAndMeiTuan();
+			array = checkServerStatus("alibaba_meituan_url", type);
 		} else if ("303".equals(type)) {
 			// 过期扫描订单
-			array = invalidOrder();
+			array=checkServerStatus("invalid_order_url",type);
 		} else if ("304".equals(type)) {
 			// 抢票内存统计消费者
-			array = ticketMemory();
+			array=checkServerStatus("ticket_memory_url",type);
 		} else if ("305".equals(type)) {
 			// 淘宝抢票查询列队
-			array = taoBao();
+			array=checkServerStatus("taobao_url",type);
 		} else if ("306".equals(type)) {
 			// 抢票内存
-			array = Memory();
+			array=checkServerStatus("memory_url",type);
 		} else if ("307".equals(type)) {
 			// 下单消费者
-			array = placeOrderCustomerResult();
+			array=checkServerStatus("placeOrderCustomerResult_url",type);
 		} else if ("308".equals(type)) {
 			// rep
-			array = rep();
+			array=checkServerStatus("rep_url",type);
 		} else if ("309".equals(type)) {
 			// 服务器状态
-			array = serverStatus();
+			array=serverStatus();
 		}
 		// 打印json数据到页面
 		Utils.printInfo(array, response);
@@ -96,279 +100,45 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private JSONArray serverStatus() {
 		JSONArray arrayList = new JSONArray();
 		JSONArray array = new JSONArray();
-		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"),"", "utf-8");
+		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"),
+				"", "utf-8");
 		// 获取url字符数组
-		String[] ulrs = (ret.toString() + ",http://0.0.0.0:0/trainorder_bespeak/isNormal.jsp")
-				.split(",");
+		String[] serverUrls = ret.toString().split(",");
 		String oldIP = "";
-		for (int i = 0; i < ulrs.length; i++) {
+		
+		Map<String,JSONObject> list=new HashMap<String,JSONObject>();
+		for (int i = 0; i < serverUrls.length; i++) {
 			// 替换url
-			String url = ulrs[i].trim().replace("iSearch", "isNormal.jsp");
-			String newIp = getIpAndPort(url)[0];
+			String newServerUrl = serverUrls[i].trim().replace("iSearch", "isNormal.jsp");
+			String [] ipAndPort = getIpAndPort(newServerUrl);
 			// 根据IP进行分组，IP相同的分到一组
-			if (oldIP == "") {
-				oldIP = newIp;
-			}
-			if (!oldIP.equals(newIp)) {
-				JSONObject json1 = new JSONObject();
-				json1.put("IP", oldIP);
-				json1.put("urls", array);
-				array = new JSONArray();
-				arrayList.add(json1);
-				oldIP = newIp;
-			}
+//			if (oldIP == "") {
+//				oldIP = ipAndPort[0];
+//			}
+//			if (!oldIP.equals(ipAndPort[0])) {
+//				JSONObject json1 = new JSONObject();
+//				json1.put("IP", oldIP);
+//				json1.put("urls", array);
+//				array = new JSONArray();
+//				arrayList.add(json1);
+//				oldIP = ipAndPort[0];
+//			}
 			// 封装每台服务器的状态
 			JSONObject json = new JSONObject();
-			json.put("ip", newIp);
-			json.put("port", getIpAndPort(url)[1]);
-			String aaaaString = HttpUtils.submitGet(url);
-			if (null != aaaaString) {
-				json.put("value", aaaaString);
+			json.put("ip", ipAndPort[0]);
+			json.put("port", getIpAndPort(newServerUrl)[1]);
+			String serverStatus = HttpUtils.submitGet(newServerUrl);
+			if (null != serverStatus) {
+				json.put("serverStatus", serverStatus);
 			} else {
-				json.put("value", "异常");
+				json.put("serverStatus", "异常");
 			}
 			array.add(json);
 		}
 		return arrayList;
 	}
 
-	/**
-	 * @Description:抢票内存
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午10:04:02
-	 * @return
-	 */
-	private JSONArray Memory() {
-		JSONArray jsonArray = new JSONArray();
-		String[] ips = PropertyUtil.getValue("memory_url", "Train.properties").split(",");
-		for (int i = 0; i < ips.length; i++) {
-			String[] ipAndPort = getIpAndPort(ips[i]);
-			JSONObject jsonObject = new JSONObject();
-			if (i < 5) {
-				jsonObject.put("name", (i + 1) + "号");
-			}
-			if (i == 5) {
-				jsonObject.put("name", "VIP");
-			}
-			if (i == 6) {
-				jsonObject.put("name", "探针");
-			}
-			jsonObject.put("ip", ipAndPort[0]);
-			jsonObject.put("port", ipAndPort[1]);
-			String result = "";
-			try {
-				result = HttpUtils.submitGet(ips[i]);
-				if (null != result) {
-					jsonObject.put("result", result);
-				} else {
-					jsonObject.put("result", "异常");
-				}
-			} catch (Exception e) {
-				jsonObject.put("result", "异常");
-				e.printStackTrace();
-			}
-			jsonArray.add(jsonObject);
-		}
-		return jsonArray;
-	}
 
-	/**
-	 * @Description: 下单消费者
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午9:29:05
-	 * @return
-	 */
-	private JSONArray placeOrderCustomerResult() {
-		JSONArray jsonArray = new JSONArray();
-		String[] ips = PropertyUtil.getValue("placeOrderCustomerResult_url","Train.properties").split(",");
-		for (int i = 0; i < ips.length; i++) {
-			String[] ipAndPort = getIpAndPort(ips[i]);
-			JSONObject json = new JSONObject();
-			if (i == 0 || i == 1) {
-				json.put("name", "普通下单消费者");
-			} else {
-				json.put("name", "VIP下单消费者");
-			}
-			json.put("ip", ipAndPort[0]);
-			json.put("port", ipAndPort[1]);
-			String result = "";
-			try {
-				result = Utils.filterNum(HttpUtils.submitGet(ips[i]));
-				if (null != result) {
-					json.put("result", result);
-				} else {
-					json.put("result", "异常");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				json.put("result", "异常");
-			}
-			jsonArray.add(json);
-		}
-		return jsonArray;
-	}
-
-	/**
-	 * @Description: REP
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午9:15:26
-	 * @return
-	 */
-	private JSONArray rep() {
-		String url = PropertyUtil.getValue("rep_url", "Train.properties");
-		JSONArray jsonArray = new JSONArray();
-		JSONObject json = new JSONObject();
-		String[] ipAndPort = getIpAndPort(url);
-		json.put("ip", ipAndPort[0]);
-		json.put("port", ipAndPort[1]);
-		String result = "";
-		try {
-			result = HttpUtils.submitGet(url);
-			if (result != null) {
-				json.put("result", result);
-			} else {
-				json.put("result", "异常");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			if (result == null) {
-				json.put("result", "异常");
-			}
-		}
-		jsonArray.add(json);
-		return jsonArray;
-	}
-
-	/**
-	 * @Description: 抢票内存统计消费者
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午9:03:09
-	 * @return
-	 */
-	private JSONArray ticketMemory() {
-		String url = PropertyUtil.getValue("ticket_memory_url",
-				"Train.properties");
-		// 抢票内存统计消费者
-		String[] ipAndPort = getIpAndPort(url);
-		JSONArray array = new JSONArray();
-		JSONObject json = new JSONObject();
-		json.put("ip", ipAndPort[0]);
-		json.put("port", ipAndPort[1]);
-		String result = "";
-		try {
-			result = HttpUtils.submitGet(url);
-			if (null != result) {
-				json.put("result", result);
-			} else {
-				json.put("result", "异常");
-			}
-		} catch (Exception e) {
-			json.put("result", "异常");
-			e.printStackTrace();
-		}
-
-		array.add(json);
-		return array;
-	}
-
-	/**
-	 * @Description: alibabaMeituan
-	 * @author 徐凯强
-	 * @date 2016年11月7日 下午5:44:45
-	 * @param ips
-	 * @return返回Data对象，可能是真实数据，也有可能是异常信息
-	 */
-	private JSONArray alibabaAndMeiTuan() {
-		String[] ips = PropertyUtil.getValue("alibaba_meituan_url",
-				"Train.properties").split(",");
-		JSONArray array = new JSONArray();
-		for (int i = 0; i < ips.length; i++) {
-			String[] ipAndPort = getIpAndPort(ips[i]);
-			String result = "";
-			JSONObject json = new JSONObject();
-			json.put("ip", ipAndPort[0]);
-			json.put("port", ipAndPort[1]);
-			try {
-				result = HttpUtils.submitGet(ips[i]);
-				if (null != result) {
-					if (i == 0) {
-						json.put("name", "阿里内存重构");
-					}
-					if (i == 1) {
-						json.put("name", "美团内存重构");
-					}
-					json.put("result", result);
-				} else {
-					json.put("result", "异常");
-				}
-			} catch (Exception e) {
-				json.put("result", "异常");
-			}
-			array.add(json);
-		}
-		return array;
-	}
-
-	/**
-	 * @Description: 过期扫描服务
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午8:35:37
-	 */
-
-	private JSONArray invalidOrder() {
-		JSONArray jsonArray = new JSONArray();
-		String[] ips = PropertyUtil.getValue("invalid_order_url",
-				"Train.properties").split(",");
-		for (int i = 0; i < ips.length; i++) {
-			String[] ipAndPort = getIpAndPort(ips[i]);
-			JSONObject json = new JSONObject();
-			String result = "";
-			try {
-				result = HttpUtils.submitGet(ips[i]);
-				if (null != result) {
-					json.put("result", result);
-				} else {
-					json.put("result", "异常");
-				}
-			} catch (Exception e) {
-				json.put("result", "异常");
-				e.printStackTrace();
-			}
-
-			json.put("ip", ipAndPort[0]);
-			json.put("port", ipAndPort[1]);
-			jsonArray.add(json);
-		}
-		return jsonArray;
-	}
-
-	/**
-	 * @Description: 淘宝抢票查询列队
-	 * @author 徐凯强
-	 * @date 2016年11月8日 上午8:55:36
-	 */
-	private JSONArray taoBao() {
-		JSONArray array = new JSONArray();
-		String url = PropertyUtil.getValue("taobao_url", "Train.properties");
-		JSONObject json = new JSONObject();
-		String[] ipAndPort = getIpAndPort(url);
-		json.put("port", ipAndPort[1]);
-		json.put("ip", ipAndPort[0]);
-		String taoBaoResult = "";
-		try {
-			taoBaoResult = HttpUtils.submitGet(url);
-			if (null != taoBaoResult) {
-				json.put("result", taoBaoResult);
-			} else {
-				json.put("result", "异常");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			json.put("result", "异常");
-		}
-		array.add(json);
-		return array;
-	}
 
 	/**
 	 * @Description: 根据url获取ip
@@ -389,22 +159,67 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		String[] data = { ip, port };
 		return data;
 	}
-	
-	
+
 	/**
 	 * @Description: 传入配置文件的key值和请求的类型type获取要返回的服务器状态jsonArray
 	 * @author 徐凯强
 	 * @date 2016年11月11日 下午5:38:41
 	 * @param property_key配置文件键值
-	 * @param type请求的类型，例如：点击抢票内存统计消费者，点击淘宝抢票查询列队
+	 * @param type请求的类型
+	 *            ，例如：点击抢票内存统计消费者，点击淘宝抢票查询列队
 	 * @return
-	*/
-	private  static   JSONArray   checkServerStatus(String property_key,String type){
-		
-		
-		
-		return null;
+	 */
+	private static JSONArray checkServerStatus(String property_key, String type) {
+		JSONArray serverStatusArray = new JSONArray();
+		// 从Train.properties获取serverUrls数组
+		String[] serverUrls = PropertyUtil.getValue(property_key,
+				"Train.properties").split("\\,");
+		//遍历serverUrls
+		for (int i = 0; i < serverUrls.length; i++) {
+			JSONObject serverStatusJsonObj = new JSONObject();
+			if ("302".equals(type)||"307".equals(type)||"306".equals(type)) {
+				String [] serverUrlAndServerName = serverUrls[i].split("\\|");
+				// 获取名称
+				serverStatusJsonObj.put("name", serverUrlAndServerName[1]);
+				// 获取状态
+				try {
+					String serverStatus="";
+					if("307".equals(type)){
+						serverStatus = Utils.filterNum(HttpUtils.submitGet(serverUrlAndServerName[0]));	
+					}else{
+						serverStatus = HttpUtils.submitGet(serverUrlAndServerName[0]);
+					}
+					if(null!=serverStatus){
+						serverStatusJsonObj.put("serverStatus", serverStatus);
+					}else{
+						serverStatusJsonObj.put("serverStatus", "异常");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			// 获取端口,获取IP
+			String[] ipAndPort = getIpAndPort(serverUrls[i]);
+			// 实例化jsonObject
+			serverStatusJsonObj.put("ip", ipAndPort[0]);
+			serverStatusJsonObj.put("port", ipAndPort[1]);
+			if("303".equals(type)||"305".equals(type)||"308".equals(type)||"304".equals(type)){
+				// 获取状态
+				try {
+					String serverStatus="";
+						serverStatus = HttpUtils.submitGet(serverUrls[i]);
+					if(null!=serverStatus){
+						serverStatusJsonObj.put("serverStatus", serverStatus);
+					}else{
+						serverStatusJsonObj.put("serverStatus", "异常");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			serverStatusArray.add(serverStatusJsonObj);
+		}
+		return serverStatusArray;
 	}
-	
-	
+
 }

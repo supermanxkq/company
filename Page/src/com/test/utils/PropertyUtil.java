@@ -2,6 +2,7 @@ package com.test.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -21,8 +22,7 @@ public class PropertyUtil {
         String value = "";
         InputStream in = null;
         try {
-            in = PropertyUtil.class.getResourceAsStream("/Constants.properties");
-            p.load(in);
+			p.load(new InputStreamReader(PropertyUtil.class.getClassLoader().getResourceAsStream("/Constants.properties"),"UTF-8"));
             value = p.getProperty(key);
         }
         catch (IOException e) {

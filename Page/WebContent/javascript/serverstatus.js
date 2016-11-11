@@ -52,10 +52,10 @@ $(function() {
 				var  html="<table width='100%' height='100%' class='am-table'><thead><tr><th>名称</th><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>";
 						for(var i = 0 ; i < jsonData.length; i ++){
 							html+="<tr><td>"+jsonData[i].name+"</td><td>"+jsonData[i].ip+"</td><td>"+jsonData[i].port+"</td>" ;
-							if(jsonData[i].result!='异常'){
-								html+="<td><font color='green' style='font-weight:bold;'>"+jsonData[i].result;
+							if(jsonData[i].serverStatus!='异常'){
+								html+="<td><font color='green' style='font-weight:bold;'>"+jsonData[i].serverStatus;
 							}else{
-								html+="<td><font color='red' style='font-weight:bold;'>"+jsonData[i].result;
+								html+="<td><font color='red' style='font-weight:bold;'>"+jsonData[i].serverStatus;
 							}
 						}
 						html+="</font></td></tr></tbody></table>";
@@ -73,10 +73,10 @@ $(function() {
 				var  html="<table width='100%' height='100%' class='am-table'><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>";
 				for (var i = 0; i < jsonData.length; i++) {
 					html+="<tr><td>"+jsonData[i].ip+"</td><td>"+jsonData[i].port+"</td>";
-					if(jsonData[i].result!='异常'){
-						html+="<td><font color='green' style='font-weight:bold;'>"+jsonData[i].result+"</font></td>";
+					if(jsonData[i].serverStatus!='异常'){
+						html+="<td><font color='green' style='font-weight:bold;'>"+jsonData[i].serverStatus+"</font></td>";
 					}else{
-						html+="<td><font color='red' style='font-weight:bold;'>"+jsonData[i].result+"</font></td>";
+						html+="<td><font color='red' style='font-weight:bold;'>"+jsonData[i].serverStatus+"</font></td>";
 					}
 					html+="</tr>";
 				}
@@ -97,14 +97,14 @@ $(function() {
 				for (var i = 0; i < jsonData.length; i++) {
 					html+="<tr><td>"+jsonData[i].name+"</td>"
 					html+="<td>"+jsonData[i].ip+"</td><td>"+jsonData[i].port+"</td>";
-					if(jsonData[i].result!='异常'){
-						var info=jsonData[i].result.split(',');
+					if(jsonData[i].serverStatus!='异常'){
+						var info=jsonData[i].serverStatus.split(',');
 						html+="<td ><font color='green' style='font-weight:bold;'>"+ info[0] + "</font></td>";
 						html+="<td ><font color='green' style='font-weight:bold;'>"+ info[1] + "</font></td>";
 						html+="<td ><font color='green' style='font-weight:bold;'>"+ info[2] + "</font></td>";
 						html+="<td ><font color='green' style='font-weight:bold;'>"+ info[3] + "</font></td>";
 					}else{
-						html+="<td colspan='4'><font color='red' style='font-weight:bold;'>"+ jsonData[i].result + "</font></td>";
+						html+="<td colspan='4'><font color='red' style='font-weight:bold;'>"+ jsonData[i].serverStatus + "</font></td>";
 					}
 					html+="</tr>";
 				}
@@ -126,10 +126,10 @@ $(function() {
 				var  html="<table width='100%' height='100%' class='am-table'><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>";
 				for (var i = 0; i < jsonData.length; i++) {
 					html+="<tr><td>"+jsonData[i].ip+"</td>" + "<td>"+jsonData[i].port+"</td>";
-					if(jsonData[i].result!='异常'){
-						html+="<td ><font color='green' style='font-weight:bold;'>"+jsonData[i].result;
+					if(jsonData[i].serverStatus!='异常'){
+						html+="<td ><font color='green' style='font-weight:bold;'>"+jsonData[i].serverStatus;
 					}else{
-						html+="<td ><font color='red' style='font-weight:bold;'>"+jsonData[i].result;
+						html+="<td ><font color='red' style='font-weight:bold;'>"+jsonData[i].serverStatus;
 					}
 					html+="</font></td></tr>"
 				}
@@ -148,12 +148,12 @@ $(function() {
 				var  html="<table width='100%' height='100%' class='am-table'><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>";
 					for (var i = 0; i < jsonData.length; i++) {
 						html+="<tr> <td>"+jsonData[i].ip+"</td>" + "<td>"+jsonData[i].port+"</td>"
-						if(jsonData[i].result!='异常'){
+						if(jsonData[i].serverStatus!='异常'){
 							html+= "<td ><font color='green' style='font-weight:bold;'>"
-								+ jsonData[i].result + "</font></td>";
+								+ jsonData[i].serverStatus + "</font></td>";
 						}else{
 							html+= "<td ><font color='red' style='font-weight:bold;'>"
-								+ jsonData[i].result + "</font></td>";
+								+ jsonData[i].serverStatus + "</font></td>";
 						}
 						html+= "</tr>" ;
 					}
@@ -174,12 +174,12 @@ $(function() {
 					html+= "<tr>"
 						+ "<td>"+jsonData[i].ip+"</td>" + "<td>"+jsonData[i].port+"</td>"
 						+ "<td >" ;
-					if(jsonData[i].result=='异常'){
+					if(jsonData[i].serverStatus=='异常'){
 						html+="<font color='red' style='font-weight:bold;'>"
-							+ jsonData[i].result + "</font></td>";
+							+ jsonData[i].serverStatus + "</font></td>";
 					}else{
 						html+="<font color='green' style='font-weight:bold;'>"
-							+ jsonData[i].result + "</font></td>";
+							+ jsonData[i].serverStatus + "</font></td>";
 					}
 					 html+= "</tr>"
 				}
@@ -204,12 +204,12 @@ $(function() {
 					}
 					html+= "<td>"+jsonData[i].ip+"</td>";
 					html+= "<td>"+jsonData[i].port+"</td>"
-					if(jsonData[i].result=='异常'){
+					if(jsonData[i].serverStatus=='异常'){
 						html+= "<td><font color='red' style='font-weight:bold;'>";
-							html+= jsonData[i].result + "</font></td>";
+							html+= jsonData[i].serverStatus + "</font></td>";
 					}else{
 						html+= "<td><font color='green' style='font-weight:bold;'>";
-						html+= jsonData[i].result + "</font></td>";
+						html+= jsonData[i].serverStatus + "</font></td>";
 					}
 					 html+="</tr>";
 				}
