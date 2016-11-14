@@ -225,23 +225,25 @@ $(function() {
 			data:'',
 			type:'post',
 			success:function(jsonData){
-				$(".server").html("");
-				var color=0;
+				$("#server").html("");
 				for (var i = 0; i < jsonData.length; i++) {
-					var  array=['am-panel-danger','am-panel-success','am-panel-secondary'];
-					var  html='<div class="am-panel    '+array[color]+'    panel-width-height server-float">';
-					html+='<div class="am-panel-hd">'+jsonData[i].IP+'</div>';
-					html+='<div class="am-panel-bd"><table width="100%" height="100%" class="am-table"><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>';
-					for (var j = 0; j < jsonData[i].urls.length; j++) {
-						html+='<tr><td>'+jsonData[i].urls[j].ip+'</td><td>'+jsonData[i].urls[j].port+'</td><td><font color="red" style="font-weight:bold;">'+jsonData[i].urls[j].value+'</font></td></tr>';
-					}
-					html+='</tbody></table></div>';
-					html+= '</div>';
-					color++;
-					if(color==3){
-						color=0;
-					}
-					$("#server").append(html);
+					var color=0;
+					$.each(jsonData[i],function(index,obj){
+						var  array=['am-panel-danger','am-panel-success','am-panel-secondary'];
+						var  html='<div class="am-panel    '+array[color]+'    panel-width-height server-float">';
+						html+='<div class="am-panel-hd">'+index+'</div>';
+						html+='<div class="am-panel-bd"><table width="100%" height="100%" class="am-table"><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>';
+						$.each(obj,function(index,obj){
+								html+='<tr><td>'+obj.ip+'</td><td>'+obj.port+'</td><td><font color="red" style="font-weight:bold;">'+obj.serverStatus+'</font></td></tr>';
+						});
+						html+='</tbody></table></div>';
+						html+= '</div>';
+						$("#server").append(html);
+						color++;
+						if(color==3){
+							color=0;
+						}
+					});
 				}
 			}
 		});

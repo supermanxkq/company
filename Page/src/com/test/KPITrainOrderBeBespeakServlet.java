@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.test.utils.HttpUtils;
@@ -24,7 +30,6 @@ import com.test.utils.Utils;
  */
 
 /**
- * @ClassName: AnalysisServlet
  * @Description: 阿里内存重构解析
  * @author xukaiqiang
  * @date 2016年11月7日 上午10:11:29
@@ -36,6 +41,8 @@ import com.test.utils.Utils;
 public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	
+    private static Logger logger = LogManager.getLogger(KPITrainOrderBeBespeakServlet.class);
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -66,79 +73,135 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			array = checkServerStatus("alibaba_meituan_url", type);
 		} else if ("303".equals(type)) {
 			// 过期扫描订单
-			array=checkServerStatus("invalid_order_url",type);
+			array = checkServerStatus("invalid_order_url", type);
 		} else if ("304".equals(type)) {
 			// 抢票内存统计消费者
-			array=checkServerStatus("ticket_memory_url",type);
+			array = checkServerStatus("ticket_memory_url", type);
 		} else if ("305".equals(type)) {
 			// 淘宝抢票查询列队
-			array=checkServerStatus("taobao_url",type);
+			array = checkServerStatus("taobao_url", type);
 		} else if ("306".equals(type)) {
 			// 抢票内存
-			array=checkServerStatus("memory_url",type);
+			array = checkServerStatus("memory_url", type);
 		} else if ("307".equals(type)) {
 			// 下单消费者
-			array=checkServerStatus("placeOrderCustomerResult_url",type);
+			array = checkServerStatus("placeOrderCustomerResult_url", type);
 		} else if ("308".equals(type)) {
 			// rep
-			array=checkServerStatus("rep_url",type);
+			array = checkServerStatus("rep_url", type);
 		} else if ("309".equals(type)) {
 			// 服务器状态
-			array=serverStatus();
+			array = checkServerStatus("server_status_url", type);
 		}
 		// 打印json数据到页面
 		Utils.printInfo(array, response);
 	}
 
 	/**
-	 * @Description: 服务器状态
+	 * @Description: 传入配置文件的key值和请求的类型type获取要返回的服务器状态jsonArray
 	 * @author 徐凯强
-	 * @date 2016年11月8日 上午11:28:01
-	 * @param ips
+	 * @date 2016年11月11日 下午5:38:41
+	 * @param property_key配置文件键值
+	 * @param type请求的类型
+	 *            ，例如：点击抢票内存统计消费者，点击淘宝抢票查询列队
 	 * @return
 	 */
-	private JSONArray serverStatus() {
-		JSONArray arrayList = new JSONArray();
-		JSONArray array = new JSONArray();
-		StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue("server_status_url", "Train.properties"),
-				"", "utf-8");
-		// 获取url字符数组
-		String[] serverUrls = ret.toString().split(",");
-		String oldIP = "";
-		
-		Map<String,JSONObject> list=new HashMap<String,JSONObject>();
-		for (int i = 0; i < serverUrls.length; i++) {
-			// 替换url
-			String newServerUrl = serverUrls[i].trim().replace("iSearch", "isNormal.jsp");
-			String [] ipAndPort = getIpAndPort(newServerUrl);
-			// 根据IP进行分组，IP相同的分到一组
-//			if (oldIP == "") {
-//				oldIP = ipAndPort[0];
-//			}
-//			if (!oldIP.equals(ipAndPort[0])) {
-//				JSONObject json1 = new JSONObject();
-//				json1.put("IP", oldIP);
-//				json1.put("urls", array);
-//				array = new JSONArray();
-//				arrayList.add(json1);
-//				oldIP = ipAndPort[0];
-//			}
-			// 封装每台服务器的状态
-			JSONObject json = new JSONObject();
-			json.put("ip", ipAndPort[0]);
-			json.put("port", getIpAndPort(newServerUrl)[1]);
-			String serverStatus = HttpUtils.submitGet(newServerUrl);
-			if (null != serverStatus) {
-				json.put("serverStatus", serverStatus);
-			} else {
-				json.put("serverStatus", "异常");
-			}
-			array.add(json);
+	private static JSONArray checkServerStatus(String property_key, String type) {
+		//要返回的对象
+		JSONArray serverStatusArray = new JSONArray();
+		// 从Train.properties获取serverUrls数组
+		String[] serverUrls = {};
+		// 进行分组的map
+		Map<String, List<JSONObject>> resultMap = new HashMap<String, List<JSONObject>>();
+		//所有查询消费者
+		if ("309".equals(type)) {
+			StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue(
+					"server_status_url", "Train.properties"), "", "utf-8");
+			// 获取url字符数组
+			serverUrls = ret.toString().split(",");
+		} else {
+			serverUrls = PropertyUtil
+					.getValue(property_key, "Train.properties").split("\\,");
 		}
-		return arrayList;
+
+		// 遍历serverUrls
+		for (int i = 0; i < serverUrls.length; i++) {
+			JSONObject serverStatusJsonObj = new JSONObject();
+			String serverUrl = "";
+
+			// 如果type为309,将所有的url中iSearch替换成isNormal.jsp
+			if ("309".equals(type)) {
+				// 替换url
+				serverUrl = serverUrls[i].trim().replace("iSearch",
+						"isNormal.jsp");
+			} else {
+				serverUrl = serverUrls[i];
+			}
+
+			// 如果是302,307,306，获取其中的name
+			if ("302".equals(type) || "307".equals(type) || "306".equals(type)) {
+				String[] serverUrlAndServerName = serverUrls[i].split("\\|");
+				// 获取名称
+				serverStatusJsonObj.put("name", serverUrlAndServerName[1]);
+				// 获取状态
+				try {
+					String serverStatus = "";
+					if ("307".equals(type)) {
+						serverStatus = Utils.filterNum(HttpUtils
+								.submitGet(serverUrlAndServerName[0]));
+					} else {
+						serverStatus = HttpUtils
+								.submitGet(serverUrlAndServerName[0]);
+					}
+					if (null != serverStatus &&!"异常".equals(serverStatus)) {
+						serverStatusJsonObj.put("serverStatus", serverStatus);
+					} else {
+						logger.error("空指针异常。");
+						serverStatusJsonObj.put("serverStatus", "异常");
+					}
+				} catch (NullPointerException e) {
+					logger.error("http请求失败！", e);
+				}
+			}
+
+			if ("303".equals(type) || "305".equals(type) || "308".equals(type)
+					|| "304".equals(type) || "309".equals(type)) {
+				// 获取状态
+				try {
+					String serverStatus = "";
+					serverStatus = HttpUtils.submitGet(serverUrl);
+					if (null != serverStatus && !"异常".equals(serverStatus)) {
+						serverStatusJsonObj.put("serverStatus", serverStatus);
+					} else {
+						logger.error("空指针异常。");
+						serverStatusJsonObj.put("serverStatus", "异常");
+					}
+				} catch (Exception e) {
+					logger.error("http请求失败！", e);
+				}
+			}
+			// 获取端口,获取IP
+			String[] ipAndPort = getIpAndPort(serverUrl);
+			// 实例化jsonObject
+			serverStatusJsonObj.put("ip", ipAndPort[0]);
+			serverStatusJsonObj.put("port", ipAndPort[1]);
+			// ip分组
+			if ("309".equals(type)) {
+				if (resultMap.containsKey(ipAndPort[0])) {
+					resultMap.get(ipAndPort[0]).add(serverStatusJsonObj);
+				} else {
+					List<JSONObject> l = new ArrayList<JSONObject>();
+					l.add(serverStatusJsonObj);
+					resultMap.put(ipAndPort[0], l);
+				}
+				serverStatusArray.add(resultMap);
+			} else {
+				serverStatusArray.add(serverStatusJsonObj);
+			}
+
+		}
+		return serverStatusArray;
 	}
-
-
 
 	/**
 	 * @Description: 根据url获取ip
@@ -158,68 +221,6 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		}
 		String[] data = { ip, port };
 		return data;
-	}
-
-	/**
-	 * @Description: 传入配置文件的key值和请求的类型type获取要返回的服务器状态jsonArray
-	 * @author 徐凯强
-	 * @date 2016年11月11日 下午5:38:41
-	 * @param property_key配置文件键值
-	 * @param type请求的类型
-	 *            ，例如：点击抢票内存统计消费者，点击淘宝抢票查询列队
-	 * @return
-	 */
-	private static JSONArray checkServerStatus(String property_key, String type) {
-		JSONArray serverStatusArray = new JSONArray();
-		// 从Train.properties获取serverUrls数组
-		String[] serverUrls = PropertyUtil.getValue(property_key,
-				"Train.properties").split("\\,");
-		//遍历serverUrls
-		for (int i = 0; i < serverUrls.length; i++) {
-			JSONObject serverStatusJsonObj = new JSONObject();
-			if ("302".equals(type)||"307".equals(type)||"306".equals(type)) {
-				String [] serverUrlAndServerName = serverUrls[i].split("\\|");
-				// 获取名称
-				serverStatusJsonObj.put("name", serverUrlAndServerName[1]);
-				// 获取状态
-				try {
-					String serverStatus="";
-					if("307".equals(type)){
-						serverStatus = Utils.filterNum(HttpUtils.submitGet(serverUrlAndServerName[0]));	
-					}else{
-						serverStatus = HttpUtils.submitGet(serverUrlAndServerName[0]);
-					}
-					if(null!=serverStatus){
-						serverStatusJsonObj.put("serverStatus", serverStatus);
-					}else{
-						serverStatusJsonObj.put("serverStatus", "异常");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			// 获取端口,获取IP
-			String[] ipAndPort = getIpAndPort(serverUrls[i]);
-			// 实例化jsonObject
-			serverStatusJsonObj.put("ip", ipAndPort[0]);
-			serverStatusJsonObj.put("port", ipAndPort[1]);
-			if("303".equals(type)||"305".equals(type)||"308".equals(type)||"304".equals(type)){
-				// 获取状态
-				try {
-					String serverStatus="";
-						serverStatus = HttpUtils.submitGet(serverUrls[i]);
-					if(null!=serverStatus){
-						serverStatusJsonObj.put("serverStatus", serverStatus);
-					}else{
-						serverStatusJsonObj.put("serverStatus", "异常");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			serverStatusArray.add(serverStatusJsonObj);
-		}
-		return serverStatusArray;
 	}
 
 }

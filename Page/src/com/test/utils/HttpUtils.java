@@ -7,6 +7,10 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 /**
  * @ClassName: HttpUtils
  * @Description: http请求工具类,通过get或者是post方式请求数据
@@ -18,6 +22,7 @@ import java.net.URLConnection;
  */
 
 public class HttpUtils {
+	private static Logger logger=LogManager.getLogger(HttpUtils.class);
 	/**
 	 * java.net实现 HTTP或HTTPs GET方法提交
 	 * 
@@ -47,12 +52,13 @@ public class HttpUtils {
 			str = linebuff.toString();
 		} catch (Exception e) {
 			// e.printStackTrace();
+			logger.info("出现连接超时异常了。",e);
 			str = "异常";
 		} finally {
 			try {
 				reader.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.info("出现空指针异常了。",e);
 			}
 		}
 		return str;
