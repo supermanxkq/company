@@ -234,7 +234,15 @@ $(function() {
 						html+='<div class="am-panel-hd">'+index+'</div>';
 						html+='<div class="am-panel-bd"><table width="100%" height="100%" class="am-table"><thead><tr><th>IP</th><th>端口</th><th>状态</th></tr></thead> <tbody>';
 						$.each(obj,function(index,obj){
-								html+='<tr><td>'+obj.ip+'</td><td>'+obj.port+'</td><td><font color="red" style="font-weight:bold;">'+obj.serverStatus+'</font></td></tr>';
+							
+								
+								html+='<tr><td>'+obj.ip+'</td><td>'+obj.port+'</td><td>';
+								if(obj.serverStatus=='异常'){
+									html+='<font color="red" style="font-weight:bold;">'+obj.serverStatus+'</font>';
+								}else{
+									html+='<font color="green" style="font-weight:bold;">'+obj.serverStatus+'</font>';
+								}
+								html+='</td></tr>';
 						});
 						html+='</tbody></table></div>';
 						html+= '</div>';
