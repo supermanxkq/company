@@ -218,7 +218,7 @@ $(function() {
 			}
 		});
 	}
-	//服务器
+	//服务器查看
 	ServerStatus.serverRefresh=function(){
 		$.ajax({
 			url:rootPath+"/KPITrainOrderBeBespeakServlet?type=309",
