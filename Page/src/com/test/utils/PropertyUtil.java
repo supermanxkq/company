@@ -20,9 +20,10 @@ public class PropertyUtil {
     public static String getValue(String key) {
         Properties p = new Properties();
         String value = "";
-        InputStream in = null;
+        InputStreamReader in =null;
         try {
-			p.load(new InputStreamReader(PropertyUtil.class.getClassLoader().getResourceAsStream("/Constants.properties"),"UTF-8"));
+        	in=new InputStreamReader(PropertyUtil.class.getClassLoader().getResourceAsStream("/Constants.properties"), "UTF-8");
+			p.load(in);
             value = p.getProperty(key);
         }
         catch (IOException e) {
@@ -48,9 +49,9 @@ public class PropertyUtil {
     public static String getValue(String key, String filename) {
         Properties p = new Properties();
         String value = "";
-        InputStream in = null;
+        InputStreamReader in =null;
         try {
-            in = PropertyUtil.class.getResourceAsStream("/" + filename);
+        	in=new InputStreamReader(PropertyUtil.class.getClassLoader().getResourceAsStream("/"+ filename), "UTF-8");
             p.load(in);
             value = p.getProperty(key);
         }

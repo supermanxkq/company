@@ -13,12 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.test.utils.HttpUtils;
@@ -41,8 +35,7 @@ import com.test.utils.Utils;
 public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-    private static Logger logger = LogManager.getLogger(KPITrainOrderBeBespeakServlet.class);
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -107,13 +100,13 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 	 * @return
 	 */
 	private static JSONArray checkServerStatus(String property_key, String type) {
-		//要返回的对象
+		// 要返回的对象
 		JSONArray serverStatusArray = new JSONArray();
 		// 从Train.properties获取serverUrls数组
 		String[] serverUrls = {};
 		// 进行分组的map
 		Map<String, List<JSONObject>> resultMap = new HashMap<String, List<JSONObject>>();
-		//所有查询消费者
+		// 所有查询消费者
 		if ("309".equals(type)) {
 			StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue(
 					"server_status_url", "Train.properties"), "", "utf-8");
@@ -144,40 +137,30 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 				// 获取名称
 				serverStatusJsonObj.put("name", serverUrlAndServerName[1]);
 				// 获取状态
-				try {
-					String serverStatus = "";
-					if ("307".equals(type)) {
-						serverStatus = Utils.filterNum(HttpUtils
-								.submitGet(serverUrlAndServerName[0]));
-					} else {
-						serverStatus = HttpUtils
-								.submitGet(serverUrlAndServerName[0]);
-					}
-					if (null != serverStatus &&!"异常".equals(serverStatus)) {
-						serverStatusJsonObj.put("serverStatus", serverStatus);
-					} else {
-						logger.error("空指针异常。");
-						serverStatusJsonObj.put("serverStatus", "异常");
-					}
-				} catch (NullPointerException e) {
-					logger.error("http请求失败！", e);
+				String serverStatus = "";
+				if ("307".equals(type)) {
+					serverStatus = Utils.filterNum(HttpUtils
+							.submitGet(serverUrlAndServerName[0]));
+				} else {
+					serverStatus = HttpUtils
+							.submitGet(serverUrlAndServerName[0]);
+				}
+				if (null != serverStatus && !"异常".equals(serverStatus)) {
+					serverStatusJsonObj.put("serverStatus", serverStatus);
+				} else {
+					serverStatusJsonObj.put("serverStatus", "异常");
 				}
 			}
 
 			if ("303".equals(type) || "305".equals(type) || "308".equals(type)
 					|| "304".equals(type) || "309".equals(type)) {
 				// 获取状态
-				try {
-					String serverStatus = "";
-					serverStatus = HttpUtils.submitGet(serverUrl);
-					if (null != serverStatus && !"异常".equals(serverStatus)) {
-						serverStatusJsonObj.put("serverStatus", serverStatus);
-					} else {
-						logger.error("空指针异常。");
-						serverStatusJsonObj.put("serverStatus", "异常");
-					}
-				} catch (Exception e) {
-					logger.error("http请求失败！", e);
+				String serverStatus = "";
+				serverStatus = HttpUtils.submitGet(serverUrl);
+				if (null != serverStatus && !"异常".equals(serverStatus)) {
+					serverStatusJsonObj.put("serverStatus", serverStatus);
+				} else {
+					serverStatusJsonObj.put("serverStatus", "异常");
 				}
 			}
 			// 获取端口,获取IP

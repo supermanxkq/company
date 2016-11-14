@@ -35,8 +35,8 @@
 
 		</Appender>
 
-		<RollingFile name="ROLLING_Log4jDemo" fileName="d:/logs/aaa.log"
-			filePattern="d:/logs/AllDemo/%d{yyyyMM}/Log4jDemo.%d{yyyy-MM-dd HH}.%i.log">
+		<RollingFile name="ROLLING_Log4jDemo" fileName="d:/logs/12306SearchMonitor/HttpUtils.log"
+			filePattern="d:/logs/12306SearchMonitor/%d{yyyyMM}/HttpUtils.%d{yyyy-MM-dd HH}.%i.log">
 			<PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy modulate="true"

@@ -70,5 +70,4 @@ public class Utils {
 		Matcher m = p.matcher(a);
 		return m.replaceAll("").trim();
 	}
-
 }
