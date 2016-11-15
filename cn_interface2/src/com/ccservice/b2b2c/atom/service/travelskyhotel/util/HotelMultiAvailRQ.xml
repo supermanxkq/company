@@ -1,0 +1,44 @@
+<!-- 多酒店查询请求XML -->
+<OTRequest>
+	<TransactionName>TH_HotelMultiAvailRQ</TransactionName>
+	<Header>
+		<SessionID/>
+		<Invoker/>
+		<Encoding>UTF-8</Encoding>
+		<Locale/>
+		<SerialNo/>
+		<TimeStamp>yyyy-MM-dd HH:mm:ss</TimeStamp>
+		<Application>hotelbe</Application>
+		<Language>CN</Language>
+		<Version/>
+	</Header>
+	<HotelAvailRQ>
+		<HotelAvailCriteria AvailReqType="includeStatic">
+			<HotelSearchCriteria>
+				<HotelRef CityCode="城市代码"/>
+				<Coordinate>Baidu</Coordinate><!-- 坐标系：百度坐标 -->
+			</HotelSearchCriteria>
+			<ConfirmRightNowIndicator>N</ConfirmRightNowIndicator><!-- 查立即确认的房型，Y/N，默认N -->
+			<StayDateRange CheckInDate="入住时间 " CheckOutDate="离店时间"/>
+ 			<RatePlanCandidates> 
+        		<RatePlanCandidate Payment="S"/><!-- 支付方式   前台现付：T ；预付：S --> 
+      		</RatePlanCandidates>
+			<RateRange Currency="CNY"/>
+			<RoomTypeDetailShowed>Y</RoomTypeDetailShowed><!-- 展示房型详细信息，Y/N，默认N -->
+			<ReqPageInfo>
+				<ReqNumOfEachPage>25</ReqNumOfEachPage><!-- 每页条数  -->
+				<ReqPageNo>1</ReqPageNo><!-- 当前页 -->
+				<IsPageView>Y</IsPageView><!-- 是否需要分页 -->
+			</ReqPageInfo>
+		</HotelAvailCriteria>
+	</HotelAvailRQ>
+	<IdentityInfo>
+		<OfficeID>OfficeID</OfficeID>
+		<UserID>UserID</UserID>
+		<Password>Password</Password>
+	</IdentityInfo>
+	<Source>
+		<OfficeCode>OfficeCode</OfficeCode>
+		<BookingChannel>HOTELBE</BookingChannel>
+	</Source>
+</OTRequest>

@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+		<title>外卡商户退款接口</title>
+	</head>
+	<body>
+		<div>外卡商户退款接口</div>
+		<form method="post" action="ICCRefundReq.jsp">
+		
+			<div>易宝流水号：<input type="text" name="p2_extId" value="extId"  /><span style="color:#FF0000;font-weight:100;">*</span></div>
+			<div>退款金额：<input type="text" name="p3_Amt" value="1.00"  /><span style="color:#FF0000;font-weight:100;">*</span></div>
+			<div>退款币种：<input type="text" name="p4_Cur" value="USD"  /><span style="color:#FF0000;font-weight:100;">*</span></div>
+			<div>商户自定义信息1：<input type="text" name="pe_extInfo1" value="extInfo1" /></div>
+			<div>商户自定义信息2：<input type="text" name="pe_extInfo2" value="extInfo1" /></div>
+			
+			<div><input type="submit" value="退款" /></div>
+		</form>
+	</body>
+</html>

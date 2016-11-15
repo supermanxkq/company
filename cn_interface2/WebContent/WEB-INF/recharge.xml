@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+	<bean id="ofcard" class="com.ccservice.b2b2c.atom.pay.OFCard">
+		<property name="userid" value="A850584" />
+		<property name="password" value="5463bd907398fa013db3c5ddae199a11" />
+		<property name="mobileunicom" value="140101" />
+		<property name="telecom" value="18" />
+		<property name="qcardid" value="220612" />
+		<property name="onlinrechargestr" value="onlineorder.do?" />
+		<property name="querycardstr" value="querycardinfo.do?" />
+		<property name="ketstr" value="5n0wbIrd" />
+		<property name="version" value="6.0" />
+		<property name="ipAddress" value="http://api2.ofpay.com/" />
+		<property name="ipAddressspare" value="http://202.102.53.141:83/" />
+	</bean>
+	
+	<bean id="onenineepayrecharge" class="com.ccservice.b2b2c.atom.pay.OneNineEPayRecharge">
+		<property name="phoneAgentid" value="hthy1234__" />
+        <property name="phoneMerchantKey" value="ncsslab04m2fabpfkxlnbyv4ditoyjvrnqors30u2rai8x39f2ea2e3ofpu2cu59m3rbkqcdd5a0fqi0kpfpn2hjh26tiqyqac5p87p0e2zll6ic0xfbfms7x14tzfa7" />
+		<property name="phoneRechargeAddress" value="http://hfjk.19ego.com/esales2/" />
+		
+		<property name="gameMerchantid" value="hthy1234__" />
+		<property name="gameKey" value="KMS1PTr1Oewc1XcvBPxBk1QMt1pvzFUy" />
+		<property name="gameRechargeAddress" value="http://www.gameyufu.19ego.cn:18050/game/gameEsalesServlet.do" />
+		
+		<property name="phonenotifyurl" value="http://www.yeebooking.com/cn_interface/BillOrderState"/>
+	</bean>
+
+</beans>
+
+
+

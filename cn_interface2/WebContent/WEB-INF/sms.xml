@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean id="sdkClient"
+		class="com.ccservice.b2b2c.atom.sms.SDKClient">
+		<property name="registationNo" value="3SDK-EMY-0130-MEWRO" />
+		<property name="key" value="2" />
+	</bean>
+
+
+	<bean id="yMSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.YMSmsSender">
+	</bean>
+	<bean id="xJSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.XJSmsSender">
+		<property name="username" value="1" />
+		<property name="password" value="2" />
+		<property name="ipAddress"
+			value="http://211.6.13.208:8000/sms.php" />
+	</bean>
+
+	<bean id="LCSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.LCSmsSender">
+		<property name="userid" value="9" />
+		<property name="username" value="1" />
+		<property name="password" value="1" />
+		<property name="ipAddress"
+			value="http://www.lanz.net.com/LANZGateway/" />
+	</bean>
+
+	<bean id="FeiYouSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.FeiYouSmsSender">
+		<property name="userid" value="8" />
+		<property name="username" value="1" />
+		<property name="password" value="111111" />
+		<property name="ipAddress"
+			value="http://www.variflight.com/MmsAgent/MmsOrderAuto.aspx" />
+	</bean>
+
+	<bean id="TianXunTongSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.TianXunTongSmsSender">
+		<property name="userid" value="" />
+		<property name="username" value="" />
+		<property name="password" value="588588" />
+		<property name="ipAddress" value="http://203.81.21.34/send" />
+		
+	</bean>
+
+	<bean id="YMHttpSmsSender"
+		class="com.ccservice.b2b2c.atom.sms.YMHttpSmsSender">
+		<property name="username" value="3SDK-HDY-0130-MEULN" />
+		<property name="password" value="578564" />
+		<property name="ipAddress"
+			value="http://sdkhttp.eucp.b2m.cn/sdkproxy" />
+	</bean>
+	
+	<bean id="qiXinTongSmsSender" class="com.ccservice.b2b2c.atom.sms.QiXinTongSmsSender">
+		<property name="username" value="hthysms" />
+		<property name="password" value="123456" />
+		<property name="smsSendAddress" value="http://api.app2e.com/smsSend.api.php" />
+		<property name="getBalanceAddress" value="http://api.app2e.com/getBalance.api.php" />
+	</bean>
+	
+	
+	<bean id="qiXinTongShortMsgSmsSender" class="com.ccservice.b2b2c.atom.sms.QiXinTongShortMsgSmsSender">
+		<property name="username" value="" />
+		<property name="password" value="" />
+		<property name="interfaceAddress" value="http://www.ydqxt.com:8080/" />
+	</bean>
+
+</beans>
+
+
+

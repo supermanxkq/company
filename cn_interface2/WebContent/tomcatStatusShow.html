@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>查询</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="stylesheet" href="css/amazeui.min.css" />
+</head>
+<body>
+	<div class="am-g doc-am-g">
+		<div class="am-u-sm-12">
+			<div class="am-panel am-panel-default">
+				<div class="am-panel-bd">
+					<table class="am-table">
+						<thead>
+							<tr>
+								<th>tomcat名字</th>
+								<th>tomcat地址</th>
+								<th>状态</th>
+								<th>错误时间</th>
+							</tr>
+						</thead>
+						<tbody id="tomcatStatus">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/amazeui.min.js"></script>
+</body>
+<script>
+	$(function() {
+		showTest();
+		window.setInterval("showTest()", 6000);
+	});
+	function showTest() {
+		//var shtml = "<tr><td style='padding:15px;border:1px solid green;'>tomcat名字</td><td style='padding:15px;border:1px solid green;'>tomcat地址</td>"
+		//	+ "<td style='padding:15px;border:1px solid green;'>状态</td><td style='padding:15px;border:1px solid green;'>错误时间</td></tr>";
+		var shtml = "";
+		$
+				.ajax({
+					type : 'GET',
+					url : '/cn_interface/testres',
+					dataType : 'json',
+					async : true,
+					success : function(data) {
+						var tomcats = data["tomcat"];
+						for (var i = 0; i < tomcats.length; i++) {
+							shtml += "<tr><td style='padding:15px;border:1px solid green;'>"
+									+ tomcats[i].name + "</td>";
+							shtml += "<td style='padding:15px;border:1px solid green;'>"
+									+ tomcats[i].url + "</td>";
+							shtml += "<td style='padding:15px;border:1px solid green;'>"
+									+ tomcats[i].status + "</td>";
+							shtml += "<td style='padding:15px;border:1px solid green;'>"
+									+ tomcats[i].date + "</td>";
+							shtml += "</tr>";
+						}
+						$("#tomcatStatus").html(shtml);
+					},
+					error : function(data) {
+						alert("异常");
+					}
+				});
+	}
+</script>
+</html>

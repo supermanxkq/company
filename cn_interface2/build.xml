@@ -1,0 +1,33 @@
+﻿<!-- Copyright (c) 2002 by ObjectLearn. All Rights Reserved. -->
+<project name="webmodulebuilder" default="deploy" basedir=".">
+	<!-- set global properties for this build -->
+	<property file="build.properties" />
+	<target name="deploy">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/com" />
+		<copy todir="${dist}/com">
+			<fileset dir="${project.base.dir}/target/classes/com">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+		<delete file="${dist}/${jarname}" />
+		<jar jarfile="${dist}/${jarname}" basedir="${dist}/" />
+
+		<delete file="${webbase}/WEB-INF/lib/${jarname}" />
+		<copy file="${dist}/${jarname}" todir="${webbase}/WEB-INF/lib" />
+	</target>
+
+	<target name="deployjar">
+		<copy file="${dist}/${jarname}" todir="${webbase}/WEB-INF/lib" />
+	</target>
+
+	<target name="undeployjar">
+		<delete file="${webbase}/WEB-INF/lib/${jarname}" />
+		<delete file="${dist}/${jarname}" />
+	</target>
+
+	<target name="buildwar">
+		<jar jarfile="../${warname}" basedir="${web}/" />
+	</target>
+
+</project>

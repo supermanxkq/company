@@ -1,0 +1,26 @@
+<!-- 城市请求XML -->
+<OTRequest>
+	<TransactionName>TH_CityDetailsSearchRQ</TransactionName>
+	<Header>
+		<SessionID/>
+		<Invoker/>
+		<Encoding>UTF-8</Encoding>
+		<Locale/>
+		<SerialNo/>
+		<TimeStamp>yyyy-MM-dd HH:mm:ss</TimeStamp>
+		<Application>availCache</Application><!-- 缓存 -->
+		<Language>CN</Language>
+	</Header>
+	<CityDetailsSearchRQ>
+		<CountryCode>CN</CountryCode>
+	</CityDetailsSearchRQ >
+	<IdentityInfo>
+		<OfficeID>OfficeID</OfficeID>
+		<UserID>UserID</UserID>
+		<Password>Password</Password>
+	</IdentityInfo>
+	<Source>
+		<OfficeCode>OfficeCode</OfficeCode>
+		<BookingChannel>HOTELBE</BookingChannel>
+	</Source>
+</OTRequest>

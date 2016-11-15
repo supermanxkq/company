@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+
+
+	<bean id="hotelBook"
+		class="com.ccservice.b2b2c.atom.hotel.HotelBook">
+		<property name="username" value="SXTJ" />
+		<property name="password"
+			value="02E882DC62692E9F29D8709BFD0369D7E09C5A4F" />
+	</bean>
+
+	<bean id="hotelBookService"
+		class="com.ccservice.b2b2c.atom.service.ManGoHotelService">
+		<property name="hotelBook">
+			<ref bean="hotelBook" />
+		</property>
+	</bean>
+	<bean name="/IManGoHotelService"
+		class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="hotelBookService" />
+		<property name="serviceInterface"
+			value="com.ccservice.b2b2c.atom.service.IManGoHotelService" />
+	</bean>
+	<bean name="IELongHotel"
+		class="com.ccservice.b2b2c.atom.hotel.ELongHotel">
+	</bean>
+	<bean id="ElongHotelService"
+		class="com.ccservice.b2b2c.atom.service.ElongHotelService">
+		<property name="elongHotel" ref="IELongHotel" />
+	</bean>
+
+	<bean name="/IELongHotelService"
+		class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="ElongHotelService" />
+		<property name="serviceInterface"
+			value="com.ccservice.b2b2c.atom.service.IELongHotelService" />
+	</bean>
+	<bean id="HMHotelService"
+		class="com.ccservice.b2b2c.atom.service.HMHotelService">
+	</bean>
+	<bean name="/IHMHotelService"
+		class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="HMHotelService" />
+		<property name="serviceInterface"
+			value="com.ccservice.b2b2c.atom.service.IHMHotelService" />
+	</bean>
+	<bean id="BussHotelService"
+		class="com.ccservice.b2b2c.atom.service.BussHotelService">
+	</bean>
+	<bean name="/IBussHotelService"
+		class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="BussHotelService" />
+		<property name="serviceInterface"
+			value="com.ccservice.b2b2c.atom.service.IBussHotelService" />
+	</bean>
+	
+	<bean id="HotelOrderInterface"
+		class="com.ccservice.hotelorderinterface.HotelOrderInterface">
+	</bean>
+	<bean name="/IHotelOrderInterface"
+		class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="HotelOrderInterface" />
+		<property name="serviceInterface"
+			value="com.ccservice.hotelorderinterface.IHotelOrderInterface" />
+	</bean>
+	
+	<!-- 淘宝酒店 -->
+	<bean id="taobaohotelservice" class="com.ccservice.b2b2c.atom.service.TaoBaoHotelService"></bean>
+	
+	<bean name="/ITaoBaoHotelSerice" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="taobaohotelservice" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.ITaoBaoHotelSerice" />
+	</bean>
+	
+	<!-- 中航信酒店 -->
+	<bean id="travelSkyHotelService" class="com.ccservice.b2b2c.atom.service.travelskyhotel.TravelskyHotelService"></bean>
+	
+	<bean name="/ITravelskyHotelService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="travelSkyHotelService" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.travelskyhotel.ITravelskyHotelService" />
+	</bean>
+	
+</beans>
+
+
+

@@ -1,0 +1,41 @@
+﻿<!-- 单酒店查询请求XML -->
+<OTRequest>
+	<Header>
+		<SessionID/>
+		<Invoker/>
+		<Encoding>UTF-8</Encoding>
+		<Locale/>
+		<SerialNo/>
+		<TimeStamp>yyyy-MM-dd hh:mm:ss</TimeStamp>
+		<Application>hotelbe</Application>
+		<Language>CN</Language>
+		<Version/>
+	</Header>
+	<HotelAvailRQ>
+		<HotelAvailCriteria AvailReqType="noneStatics"><!-- 只包含动态信息 -->
+			<HotelSearchCriteria>
+				<HotelRef HotelCode="酒店代码 "/>
+			</HotelSearchCriteria>
+			<ConfirmRightNowIndicator>N</ConfirmRightNowIndicator><!-- 查立即确认的房型，Y/N，默认N -->
+			<StayDateRange CheckInDate="入住时间" CheckOutDate="离店时间"/>
+			<RatePlanCandidates>
+				<RatePlanCandidate Payment="S"><!-- 支付方式   前台现付：T ；预付：S -->
+					<VendorsIncluded>
+						<Vendor VendorCode="SOHOTO"/><!-- 取航旅通实时数据  -->
+					</VendorsIncluded>
+				</RatePlanCandidate>
+			</RatePlanCandidates>
+			<RateRange Currency="CNY"/>
+		</HotelAvailCriteria>
+	</HotelAvailRQ>
+	<TransactionName>TH_HotelSingleAvailRQ</TransactionName>
+	<IdentityInfo>
+		<OfficeID>OfficeID</OfficeID>
+		<UserID>UserID</UserID>
+		<Password>Password</Password>
+	</IdentityInfo>
+	<Source>
+		<OfficeCode>OfficeCode</OfficeCode>
+		<BookingChannel>HOTELBE</BookingChannel>
+	</Source>
+</OTRequest>

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<import resource="sms.xml" />
+	<import resource="mail.xml" />
+	<import resource="fax.xml" />
+	<import resource="hotel.xml" />
+	<import resource="recharge.xml" />
+	<import resource="train.xml" />
+	<import resource="interticket.xml" />
+	<import resource="car.xml" />
+	<bean id="atomService" class="com.ccservice.b2b2c.atom.service.AtomService">
+		<property name="mailService" ref="mailService" />
+		<property name="faxSender" ref="faxSender" />
+		<property name="smsSender" ref="TianXunTongSmsSender" />
+		<!-- <property name="smsSender" ref="qiXinTongShortMsgSmsSender" /> -->
+		<!-- <property name="smsSender" ref="qiXinTongSmsSender" /> -->
+		<property name="trainhelper" ref="skdtrainhelper" />
+		<!--<property name="trainhelper" ref="xttrainhelper" /> -->
+		<!-- <property name="ofcard" ref="ofcard" /> -->
+		<property name="onenineepayrecharge" ref="onenineepayrecharge" />
+		<property name="lechenginterticket" ref="InternationalAirTickets" />
+		<property name="atminterticket" ref="ATMInternalTicket" />
+		<property name="ticketorder" ref="CreateTicketOrder" />
+		<property name="insurancebook" ref="SunshineInsurance" />
+		<property name="interTicker" ref="interTicker" />
+	</bean>
+
+	<!-- 保险对象 -->
+	<bean name="JinRiInsurancebook" class="com.insurance.JinRiInsurance"></bean>
+	<bean name="Newchinalifebook" class="com.insurance.Newchinalife"></bean>
+	<bean name="SunshineInsurance" class="com.insurance.SunshineInsurance"></bean>
+	<!-- 阳光保险火意险 -->
+	<bean name="SunshineInsuranceTrain" class="com.insurance.SunshineInsuranceTrain">
+		<property name="urlStr" value="http://1.202.235.81:7001/ifp/SyncInterface" />
+		<property name="username" value="boang" />
+		<property name="password" value="boangtest" />
+		<property name="interfaceFlag" value="BAYG" />
+		<property name="key" value="ldlhpwefhorehjgoer" />
+	</bean>
+	<!-- 中国人寿火意险 http://uis.instony.com:8888/ http://118.194.192.112:8888 -->
+	<bean name="ChinaLifeInsuranceTrain" class="com.insurance.ChinaLifeInsuranceTrain">
+		<property name="urlStr" value="http://uis.instony.com:8888" />
+		<property name="username" value="qicaibj" />
+		<property name="password" value="76966b555b1d12d9f098114176ecdc2d" />
+	</bean>
+	<!-- 保险对象 -->
+
+	<bean name="/IAtomService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="atomService" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.IAtomService" />
+	</bean>
+
+	<bean id="ticketPIDManComponent" class="com.ccservice.b2b2c.atom.component.TicketPIDManComponent">
+		<property name="username" value="029-63333333" />
+		<property name="password" value=""></property>
+		<property name="ipAddress" value="http://localhost:18888/api.aspx">
+		</property>
+		<property name="ipbigAddress" value="http://localhost:18888/api.aspx">
+		</property>
+		<property name="officeNumber" value="SIA296"></property>
+		<property name="iscacheprice" value="1"></property>
+	</bean>
+
+	<bean id="ticket86200Component" class="com.ccservice.b2b2c.atom.component.Ticket86200Component">
+		<property name="username" value="029-63333333" />
+		<property name="password" value="123456"></property>
+		<property name="ipAddress" value="http://et.86200.com/systemvs/ibe.php">
+		</property>
+		<property name="ipbigAddress" value="http://dfhk.3322.org:10088/api.aspx">
+		</property>
+		<property name="officeNumber" value="bjs807"></property>
+	</bean>
+
+	<bean id="ticketYastComponent" class="com.ccservice.b2b2c.atom.component.TicketYastComponent">
+		<property name="username" value="029-63333333" />
+		<property name="password" value="SHANGJIN123"></property>
+		<property name="ipAddress" value="127.0.0.1"></property>
+		<property name="ipbigAddress" value="http://dfhk.3322.org:10088/api.aspx">
+		</property>
+		<property name="officeNumber" value="bjs807"></property>
+	</bean>
+
+
+	<bean id="ticketTraveSkyComponent" class="com.ccservice.b2b2c.atom.component.TicketTraveSkyComponent">
+		<property name="username" value="029-63333333" />
+		<property name="password" value="123"></property>
+		<property name="ipAddress" value="127.0.0.1"></property>
+		<property name="ipbigAddress" value="http://hk.3311.org:10088/api.aspx">
+		</property>
+		<property name="officeNumber" value="bjs807"></property>
+	</bean>
+
+
+	<bean id="ticketBBCComponent" class="com.ccservice.b2b2c.atom.component.TicketBBCComponent">
+		<property name="username" value="01088259919" />
+		<property name="password" value="13439311111"></property>
+		<property name="ipAddress" value="http://localhost:100891/api.aspx">
+		</property>
+		<property name="ipAddress2" value="http://localhost:1008911/11api.aspx">
+		</property>
+		<property name="ipbigAddress" value="http://localhost:1008911/11api.aspx">
+		</property>
+		<property name="officeNumber" value="PEK242"></property>
+		<property name="iscacheprice" value="1"></property>
+		<property name="isinterface" value="5"></property>
+
+	</bean>
+	<bean id="ticketNBEComponent" class="com.ccservice.b2b2c.atom.component.TicketNBEComponent">
+		<property name="username" value="15538956152" />
+		<!-- 13939196926 13439311111 -->
+		<property name="password" value="13939196926" />
+		<property name="ipAddress" value="http://localhost:100891/api.aspx" />
+		<property name="ipAddress2" value="http://localhost:1008911/11api.aspx" />
+		<property name="ipbigAddress" value="http://localhost:1008911/11api.aspx" />
+		<property name="officeNumber" value="PEK242" />
+		<property name="iscacheprice" value="1" />
+		<property name="isinterface" value="5" />
+	</bean>
+
+	<bean id="ticketYSKComponent" class="com.ccservice.b2b2c.atom.component.TicketYSKComponent">
+		<property name="username" value="01067197898" />
+		<property name="password" value="13439311111" />
+		<property name="linkMobile" value="13439311111"></property>
+		<property name="ipAddress" value="http://localhost:100891/api.aspx" />
+		<property name="ipAddress2" value="http://localhost:1008911/11api.aspx" />
+		<property name="ipbigAddress" value="http://localhost:1008911/11api.aspx" />
+		<property name="officeNumber" value="SHA243" />
+		<property name="iscacheprice" value="1" />
+		<property name="isinterface" value="5" />
+
+		<property name="userid" value="BJS0273"></property>
+		<property name="printerNo" value=""></property>
+	</bean>
+
+	<bean id="ticketSearchService" class="com.ccservice.b2b2c.atom.service.TicketSearchService">
+
+		<property name="ticketYastComponent">
+			<ref bean="ticketYastComponent" />
+		</property>
+		<property name="ticket86200Component">
+			<ref bean="ticket86200Component" />
+		</property>
+
+		<property name="ticketPIDManComponent">
+			<ref bean="ticketPIDManComponent" />
+		</property>
+
+		<property name="ticketTraveSkyComponent">
+			<ref bean="ticketTraveSkyComponent" />
+		</property>
+
+		<property name="ticketBBCComponent">
+			<ref bean="ticketBBCComponent" />
+		</property>
+		<property name="ticketNBEComponent">
+			<ref bean="ticketNBEComponent" />
+		</property>
+		<property name="ticketYSKComponent">
+			<ref bean="ticketYSKComponent" />
+		</property>
+
+
+	</bean>
+
+	<bean name="/ITicketSearchService" class="com.ccservice.b2b2c.atom.server.TicketHessianServiceExporter">
+		<property name="service" ref="ticketSearchService" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.ITicketSearchService" />
+	</bean>
+
+	<bean id="HTCHotelServiceHY" class="com.ccservice.b2b2c.atom.service.HTCHotelServiceHY">
+	</bean>
+	<bean name="/IHTCHotelServiceHY" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="HTCHotelServiceHY" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.IHTCHotelServiceHY" />
+	</bean>
+
+	<bean id="JLHotelService" class="com.ccservice.b2b2c.atom.service.JLHotelService">
+	</bean>
+	<bean name="/IJLHotelService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="JLHotelService" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.IJLHotelService" />
+	</bean>
+
+	<bean id="HotelCacheService" class="com.ccservice.b2b2c.atom.service.HotelCacheService">
+	</bean>
+	<bean name="/IHotelCacheService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service" ref="HotelCacheService" />
+		<property name="serviceInterface" value="com.ccservice.b2b2c.atom.service.IHotelCacheService" />
+	</bean>
+</beans>

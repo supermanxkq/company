@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data><returnvalue>
+<code>ACK</code>
+<description>成功</description>
+</returnvalue><price><code>9</code><name>马自达2/自排/两厢</name><rate>370.0</rate><insurancefee>30</insurancefee><servicefee>60</servicefee><preauthfee>2500</preauthfee><gpsfee>0</gpsfee><pickupservicefee>0</pickupservicefee><dropoffservicefee>0</dropoffservicefee><ticketfee>600</ticketfee><vipcardfee>0</vipcardfee><mile>600</mile><totalprice>490.0</totalprice><othercityreturnfee>0</othercityreturnfee><weekdaycount>0</weekdaycount><weekendcount>2</weekendcount><holidaycount>0</holidaycount><weekdayprice>179.0</weekdayprice><weekendprice>185.0</weekendprice><holidayprice>0</holidayprice><discountamount>0</discountamount></price></data>
