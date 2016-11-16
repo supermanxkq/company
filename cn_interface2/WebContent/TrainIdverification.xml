@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<PropertyList>
-	<Item>
-		<name>isfalsitylverification</name>
-		<value>true</value>
-		<description>身份验证是否开启： true:开启     false:关闭</description>
-	</Item>
-</PropertyList>
