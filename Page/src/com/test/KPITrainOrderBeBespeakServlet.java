@@ -62,27 +62,27 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		JSONArray array = new JSONArray();
 		String type = request.getParameter("type");
 		// alibaba meiTuan
-		if ("302".equals(type)) {
+		if (Globals.alibabaAndMeiTuan.equals(type)) {
 			array = checkServerStatus("alibaba_meituan_url", type);
-		} else if ("303".equals(type)) {
+		} else if (Globals.invalidOrder.equals(type)) {
 			// 过期扫描订单
 			array = checkServerStatus("invalid_order_url", type);
-		} else if ("304".equals(type)) {
+		} else if (Globals.ticketMemory.equals(type)) {
 			// 抢票内存统计消费者
 			array = checkServerStatus("ticket_memory_url", type);
-		} else if ("305".equals(type)) {
+		} else if (Globals.taoBao.equals(type)) {
 			// 淘宝抢票查询列队
 			array = checkServerStatus("taobao_url", type);
-		} else if ("306".equals(type)) {
+		} else if (Globals.memory.equals(type)) {
 			// 抢票内存
 			array = checkServerStatus("memory_url", type);
-		} else if ("307".equals(type)) {
+		} else if (Globals.placeOrderCustomer.equals(type)) {
 			// 下单消费者
 			array = checkServerStatus("placeOrderCustomerResult_url", type);
-		} else if ("308".equals(type)) {
+		} else if (Globals.rep.equals(type)) {
 			// rep
 			array = checkServerStatus("rep_url", type);
-		} else if ("309".equals(type)) {
+		} else if (Globals.serverStatus.equals(type)) {
 			// 服务器状态
 			array = checkServerStatus("server_status_url", type);
 		}
@@ -107,7 +107,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 		// 进行分组的map
 		Map<String, List<JSONObject>> resultMap = new HashMap<String, List<JSONObject>>();
 		// 所有查询消费者
-		if ("309".equals(type)) {
+		if (Globals.serverStatus.equals(type)) {
 			StringBuffer ret = HttpUtils.submitPost(PropertyUtil.getValue(
 					"server_status_url", "Train.properties"), "", "utf-8");
 			// 获取url字符数组
@@ -123,7 +123,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			String serverUrl = "";
 
 			// 如果type为309,将所有的url中iSearch替换成isNormal.jsp
-			if ("309".equals(type)) {
+			if (Globals.serverStatus.equals(type)) {
 				// 替换url
 				serverUrl = serverUrls[i].trim().replace("iSearch",
 						"isNormal.jsp");
@@ -132,7 +132,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			}
 
 			// 如果是302,307,306，获取其中的name
-			if ("302".equals(type) || "307".equals(type) || "306".equals(type)) {
+			if (Globals.alibabaAndMeiTuan.equals(type) || Globals.memory.equals(type) ||Globals.placeOrderCustomer.equals(type)) {
 				String[] serverUrlAndServerName = serverUrls[i].split("\\|");
 				// 获取名称
 				serverStatusJsonObj.put("name", serverUrlAndServerName[1]);
@@ -152,8 +152,8 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 				}
 			}
 
-			if ("303".equals(type) || "305".equals(type) || "308".equals(type)
-					|| "304".equals(type) || "309".equals(type)) {
+			if (Globals.invalidOrder.equals(type) || Globals.taoBao.equals(type) || Globals.rep.equals(type)
+					||Globals.ticketMemory.equals(type) || Globals.serverStatus.equals(type)) {
 				// 获取状态
 				String serverStatus = "";
 				serverStatus = HttpUtils.submitGet(serverUrl);
@@ -169,7 +169,7 @@ public class KPITrainOrderBeBespeakServlet extends HttpServlet {
 			serverStatusJsonObj.put("ip", ipAndPort[0]);
 			serverStatusJsonObj.put("port", ipAndPort[1]);
 			// ip分组
-			if ("309".equals(type)) {
+			if (Globals.serverStatus.equals(type)) {
 				if (resultMap.containsKey(ipAndPort[0])) {
 					resultMap.get(ipAndPort[0]).add(serverStatusJsonObj);
 				} else {
